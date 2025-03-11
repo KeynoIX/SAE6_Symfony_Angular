@@ -1,0 +1,21 @@
+# Frontend
+frontend/node_modules/
+frontend/package-lock.json
+frontend/dist/
+frontend/.angular/cache/
+frontend/src/environments/environment*.ts
+
+# Backend
+backend/var/
+backend/vendor/
+backend/public/build/
+backend/public/uploads/
+backend/.env
+backend/.env.local
+backend/.env.*.local
+backend/composer.lock
+
+/.idea/
+/.vscode/
+/.DS_Store
+Thumbs.db
