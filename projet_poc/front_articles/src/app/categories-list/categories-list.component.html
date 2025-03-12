@@ -1,0 +1,6 @@
+<h2>Liste des Catégories</h2>
+<ul class="list-group">
+    <li class="list-group-item" *ngFor="let categorie of categories">
+        {{ categorie.nom }} ({{ categorie.description }})
+    </li>
+</ul>

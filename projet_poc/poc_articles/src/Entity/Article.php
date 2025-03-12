@@ -13,23 +13,26 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['article:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['monGroupe'])]
+    #[Groups(['article:read', 'article:write', 'categorie:read', 'categorie:write'])]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['article:read', 'article:write', 'categorie:read', 'categorie:write'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_publication = null;
 
     #[ORM\Column]
-    #[Groups(['monGroupe'])]
+    #[Groups(['article:read', 'article:write', 'categorie:read', 'categorie:write'])]
     private ?bool $publie = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles', fetch: 'EAGER')]
+    #[Groups(['article:read', 'article:write'])]
     private ?Categorie $categorie = null;
 
     public function getId(): ?int

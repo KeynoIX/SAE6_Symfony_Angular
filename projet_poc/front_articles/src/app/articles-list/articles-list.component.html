@@ -1,0 +1,9 @@
+<h2>Liste des Articles</h2>
+<ul class="list-group">
+    <li class="list-group-item" *ngFor="let article of articles">
+        Article <b>{{ article.titre }}</b><br>
+        - État de publication : {{ article.publie }}<br>
+        - Publié le : {{ article.date_publication | date : "d/M/yy" }}<br>
+        - Catégorie : {{ article.categorie.nom }}
+    </li>
+</ul>

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,25 +15,26 @@ class Categorie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['article:read', 'article:write', 'categorie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['monGroupe', 'categorie:read', 'article:read'])]
+    #[Groups(['article:read', 'article:write', 'categorie:read', 'categorie:write'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['monGroupe', 'categorie:read', 'article:read'])]
+    #[Groups(['article:read', 'article:write', 'categorie:read', 'categorie:write'])]
     private ?string $description = null;
 
     #[ORM\Column(type: 'integer', nullable: false, options: ['default' => 100])]
-    #[Groups(['monGroupe', 'categorie:read', 'article:read'])]
+    #[Groups(['article:read', 'article:write', 'categorie:read', 'categorie:write'])]
     private int $numero_ordre = 100;
 
     /**
      * @var Collection<int, Article>
      */
     #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'categorie', fetch: 'LAZY')]
-    #[Groups(['monGroupe', 'categorie:read', 'article:read'])]
+    #[Groups(['categorie:read'])]
     private Collection $articles;
 
     public function __construct()
