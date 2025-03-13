@@ -1,1 +1,42 @@
 <p>register works!</p>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow">
+          <div class="card-header text-center bg-success text-white">
+            <h3>Inscription</h3>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="mb-3">
+                <label for="firstName" class="form-label">Prénom</label>
+                <input type="text" class="form-control" id="firstName" placeholder="Votre prénom" required>
+              </div>
+              <div class="mb-3">
+                <label for="lastName" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="lastName" placeholder="Votre nom" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Adresse Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Votre email" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" class="form-control" id="password" placeholder="Votre mot de passe" required>
+              </div>
+              <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirmez le mot de passe" required>
+              </div>
+              <button type="submit" class="btn btn-success w-100">S'inscrire</button>
+            </form>
+          </div>
+          <div class="card-footer text-center">
+            <small>Déjà inscrit ? <a routerLink="/login">Connectez-vous</a></small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
