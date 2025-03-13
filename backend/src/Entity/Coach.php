@@ -7,19 +7,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CoachRepository::class)]
 class Coach extends Utilisateur
 {
+    #[Groups(['coach:read'])]
     #[ORM\Column(type: Types::JSON)]
     private array $specialites = [];
 
+    #[Groups(['coach:read', 'coach:write'])]
     #[ORM\Column]
     private ?float $tarif_horaire = null;
 
     /**
      * @var Collection<int, Seance>
      */
+    #[Groups(['coach:read'])]
     #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'coach_id')]
     private Collection $seances;
 

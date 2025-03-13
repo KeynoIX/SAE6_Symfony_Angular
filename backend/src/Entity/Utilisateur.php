@@ -6,6 +6,7 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -18,17 +19,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 ])]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[Groups(['utilisateur:read', 'utilisateur:write', 'coach:read', 'sportif:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['utilisateur:read', 'utilisateur:write', 'coach:read', 'sportif:read'])]
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
+    #[Groups(['utilisateur:read', 'utilisateur:write', 'coach:read', 'sportif:read'])]
     #[ORM\Column]
     private array $roles = [];
 
@@ -38,9 +42,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Groups(['utilisateur:read', 'utilisateur:write', 'coach:read', 'sportif:read'])]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
+    #[Groups(['utilisateur:read', 'utilisateur:write', 'coach:read', 'sportif:read'])]
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
@@ -79,8 +85,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }

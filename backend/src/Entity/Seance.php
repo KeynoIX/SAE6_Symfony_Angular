@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
 class Seance
@@ -14,17 +15,22 @@ class Seance
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['seance:read', 'seance:write'])]
     private ?int $id = null;
 
+    #[Groups(['seance:read', 'seance:write'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_heure = null;
 
+    #[Groups(['seance:read', 'seance:write'])]
     #[ORM\Column(length: 255)]
     private ?string $type_seance = null;
 
+    #[Groups(['seance:read', 'seance:write'])]
     #[ORM\Column(length: 255)]
     private ?string $theme_seance = null;
 
+    #[Groups(['seance:read', 'seance:write'])]
     #[ORM\Column(length: 255)]
     private ?string $niveau_seance = null;
 
@@ -32,6 +38,7 @@ class Seance
     #[ORM\JoinColumn(nullable: false)]
     private ?Coach $coach_id = null;
 
+    #[Groups(['seance:read', 'seance:write'])]
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
