@@ -50,6 +50,9 @@ import { NotificationComponent } from './components/shared/notification/notifica
 // Composant Page 404
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,7 +86,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule  // Ajoutez cette ligne
   ],
   providers: [],
   bootstrap: [AppComponent]
