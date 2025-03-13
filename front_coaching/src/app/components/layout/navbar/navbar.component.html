@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <!-- Logo et titre -->
+      <a class="navbar-brand" routerLink="/">Sport & Coaching</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Liens de navigation -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <!-- Liens publics -->
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/coachs" routerLinkActive="active">Coachs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/seances" routerLinkActive="active">Séances</a>
+          </li>
+  
+          <!-- Menu déroulant pour l'espace personnel -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              Mon Espace
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" routerLink="/mon-espace/my-planning">Mon planning</a></li>
+              <li><a class="dropdown-item" routerLink="/mon-espace/mon-bilan">Mon bilan</a></li>
+              <li><a class="dropdown-item" routerLink="/mon-espace/mes-reservations">Mes réservations</a></li>
+              <li><a class="dropdown-item" routerLink="/mon-espace/profile">Profil</a></li>
+            </ul>
+          </li>
+  
+          <!-- Liens d'authentification statiques -->
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">Connexion</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/register" routerLinkActive="active">Inscription</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
