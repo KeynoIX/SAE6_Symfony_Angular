@@ -96,5 +96,5 @@ class UtilisateurCrudController extends AbstractCrudController
             $hash = $this->encoder->hashPassword($event->getData(), $password);
             $form->getData()->setPassword($hash);
         };
-    }    
+    }
 }  

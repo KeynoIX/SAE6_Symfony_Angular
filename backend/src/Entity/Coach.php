@@ -21,12 +21,6 @@ class Coach extends Utilisateur
      * @var Collection<int, Seance>
      */
     #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'coach_id')]
-    private Collection $statut;
-
-    /**
-     * @var Collection<int, Seance>
-     */
-    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'coach_id')]
     private Collection $seances;
 
     /**
@@ -37,7 +31,7 @@ class Coach extends Utilisateur
 
     public function __construct()
     {
-        $this->statut = new ArrayCollection();
+        $this->setRoles(['ROLE_COACH']);
         $this->seances = new ArrayCollection();
         $this->ficheDePaies = new ArrayCollection();
     }
