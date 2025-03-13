@@ -25,6 +25,7 @@ class Sportif extends Utilisateur
 
     public function __construct()
     {
+        $this->setRoles(['ROLE_SPORTIF']);
         $this->seances = new ArrayCollection();
     }
 
