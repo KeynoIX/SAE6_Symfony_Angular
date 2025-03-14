@@ -1,1 +1,23 @@
-<p>session-list works!</p>
+<div class="container my-4">
+    <h2 class="text-center mb-4">Liste des Séances</h2>
+    <div *ngIf="loading" class="text-center">Chargement...</div>
+    <div *ngIf="error" class="text-danger text-center">{{ error }}</div>
+    <div *ngIf="!loading && !error" class="row">
+      <div class="col-md-4 mb-4" *ngFor="let session of sessions">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ session.theme_seance }} - {{ session.type_seance }}</h5>
+            <p class="card-text">
+              <strong>Date &amp; Heure :</strong> {{ session.date_heure | date:'short' }}<br>
+              <strong>Niveau :</strong> {{ session.niveau_seance }}<br>
+              <strong>Statut :</strong> {{ session.statut }}
+            </p>
+          </div>
+          <div class="card-footer text-center">
+            <a [routerLink]="['/seance', session.id]" class="btn btn-primary">Voir les détails</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

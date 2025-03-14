@@ -72,6 +72,12 @@ class SeanceController extends AbstractController
 
         return $this->json($seance, 200, [], ['groups' => 'seance:read']);
     }
+    
+    #[Route('/api/seance/{id}', methods: ['GET'])]
+public function show(Seance $seance): JsonResponse
+{
+    return $this->json($seance, 200, [], ['groups' => 'seance:read']);
+}
 
     #[Route('/api/seance/{id}', methods: ['DELETE'])]
     public function delete(Seance $seance, EntityManagerInterface $em): JsonResponse

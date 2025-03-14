@@ -37,13 +37,11 @@ const routes: Routes = [
   
   // Routes pour la section Coachs
   { path: 'coachs', component: CoachListComponent },
-  { path: 'coachs/:id', component: CoachDetailComponent },
-
-  { path: 'coach-detail/:id', component: CoachDetailComponent },
+  { path: 'coach/:id', component: CoachDetailComponent },
   
   // Routes pour la section Séances
   { path: 'seances', component: SessionListComponent },
-  { path: 'seances/:id', component: SessionDetailComponent },
+  { path: 'seance/:id', component: SessionDetailComponent },
   
   // Routes d'authentification
   { path: 'login', component: LoginComponent },
