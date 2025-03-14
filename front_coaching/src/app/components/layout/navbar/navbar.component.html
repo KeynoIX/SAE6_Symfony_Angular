@@ -37,10 +37,11 @@
   
           <!-- Liens d'authentification statiques -->
           <li class="nav-item">
-            <a class="nav-link" routerLink="/login" routerLinkActive="active">Connexion</a>
+            <a class="nav-link" routerLink="/login" routerLinkActive="active" *ngIf="!authService.currentAuthUserValue.isLogged()">Connexion</a>
+            <a class="nav-link" routerLink="/login" (click)="logout()" routerLinkActive="active" *ngIf="authService.currentAuthUserValue.isLogged()">Déconnexion</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/register" routerLinkActive="active">Inscription</a>
+            <a class="nav-link" routerLink="/register" routerLinkActive="active" *ngIf="!authService.currentAuthUserValue.isLogged()">Inscription</a>
           </li>
         </ul>
       </div>
