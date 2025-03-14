@@ -1,0 +1,152 @@
+<div class="regform-container">
+    <div class="regform-card shadow">
+      <!-- Titre -->
+      <div class="regform-header">
+        <h2>Inscription</h2>
+      </div>
+  
+      <!-- Formulaire -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="regform-body">
+        
+        <!-- Champ Prénom -->
+        <div class="form-group">
+          <label for="prenom">Prénom</label>
+          <input
+            type="text"
+            id="prenom"
+            formControlName="prenom"
+            placeholder="John"
+            class="form-control"
+          />
+          <div
+            *ngIf="(f['prenom'].touched || submitted) && f['prenom'].errors"
+            class="error-message"
+          >
+            <small *ngIf="f['prenom'].errors['required']">Le prénom est requis.</small>
+          </div>
+        </div>
+  
+        <!-- Champ Nom -->
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input
+            type="text"
+            id="nom"
+            formControlName="nom"
+            placeholder="Doe"
+            class="form-control"
+          />
+          <div
+            *ngIf="(f['nom'].touched || submitted) && f['nom'].errors"
+            class="error-message"
+          >
+            <small *ngIf="f['nom'].errors['required']">Le nom est requis.</small>
+          </div>
+        </div>
+  
+        <!-- Champ Email -->
+        <div class="form-group">
+          <label for="email">Adresse Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="ex: utilisateur@exemple.com"
+            class="form-control"
+          />
+          <div
+            *ngIf="(f['email'].touched || submitted) && f['email'].errors"
+            class="error-message"
+          >
+            <small *ngIf="f['email'].errors['required']">L'email est requis.</small>
+            <small *ngIf="f['email'].errors['email']">L'email n'est pas valide.</small>
+          </div>
+        </div>
+  
+        <!-- Champ Mot de passe -->
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="Entrez votre mot de passe"
+            class="form-control"
+          />
+  
+          <!-- Barre de progression -->
+          <div class="progress mt-2" style="height: 10px;">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              [style.width.%]="passwordStrength"
+              [ngClass]="{
+                'bg-success': passwordStrength >= 70,
+                'bg-warning': passwordStrength >= 30 && passwordStrength < 70,
+                'bg-danger': passwordStrength < 30
+              }"
+            >
+            </div>
+          </div>
+          <small class="text-muted">
+            Force du mot de passe : {{ passwordStrength }}%
+          </small>
+        </div>
+  
+        <!-- Confirmation du mot de passe -->
+        <div class="form-group">
+          <label for="confirmPassword">Confirmer le mot de passe</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            placeholder="Confirmez votre mot de passe"
+            class="form-control"
+          />
+          <div
+            *ngIf="(f['confirmPassword'].touched || submitted) && f['confirmPassword'].errors"
+            class="error-message"
+          >
+            <small *ngIf="f['confirmPassword'].errors['required']">La confirmation est requise.</small>
+            <small *ngIf="f['confirmPassword'].errors['mismatch']">Les mots de passe ne correspondent pas.</small>
+          </div>
+        </div>
+  
+        <!-- Case à cocher conditions -->
+        <div class="form-group terms">
+          <input
+            type="checkbox"
+            id="terms"
+            formControlName="terms"
+            class="form-check-input"
+          />
+          <label for="terms" class="form-check-label">
+            J'accepte les conditions d'utilisation
+          </label>
+          <div
+            *ngIf="(f['terms'].touched || submitted) && f['terms'].errors"
+            class="error-message"
+          >
+            <small *ngIf="f['terms'].errors['requiredTrue']">Vous devez accepter les conditions.</small>
+          </div>
+        </div>
+  
+        <!-- Message d'erreur si force < 70% -->
+        <div class="error-message" *ngIf="forceInsuffisante">
+          <small>Le mot de passe doit atteindre au moins 70% de force.</small>
+        </div>
+  
+        <!-- Bouton d'inscription -->
+        <button type="submit" class="btn btn-primary btn-submit">
+          S'inscrire
+        </button>
+      </form>
+  
+      <!-- Illustration à droite -->
+      <div class="regform-illustration">
+        <img src="/login.png" alt="Illustration d'inscription" />
+        <a class="login-link" routerLink="/login">Je suis déjà membre</a>
+      </div>
+    </div>
+  </div>
+      
