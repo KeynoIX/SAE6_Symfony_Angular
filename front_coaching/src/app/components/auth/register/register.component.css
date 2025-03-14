@@ -1,61 +1,59 @@
+/* Conteneur global */
 .regform-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #f8f8f8;
-    padding: 2rem;
-  }
-  
-  .regform-card {
-    position: relative;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 900px;
-    display: flex;
-    padding: 2rem;
-    
-    .regform-header {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      margin-bottom: 1.5rem; /* Ajoute de l'espace sous le titre */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f8f8f8;
+  padding: 2rem;
+}
 
+/* La carte principale */
+.regform-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 900px;
+  display: flex;
+  padding: 2rem;
+
+  /* Colonne de gauche : Titre + Formulaire */
+  .left-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* Aligne le contenu en haut (pas verticalement centré) */
+    align-items: center;
+    
+    /* L’en-tête (titre) */
+    .regform-header {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 2rem; /* Espace avant le premier champ */
+      
       h2 {
         margin: 0;
         font-size: 1.8rem;
         font-weight: bold;
       }
     }
-    
-    .login-link {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-      font-size: 0.9rem;
-      color: #666;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-    
+
     .regform-body {
-      flex: 1;
-      margin-right: 2rem;
+      width: 100%;
+      /* Pas de margin-right ici, on gère la place avec flex */
     }
-    
+
     .form-group {
       margin-bottom: 1.5rem;
-      
+      position: relative;
+
       label {
         display: block;
         margin-bottom: 0.5rem;
         font-weight: bold;
       }
-      
+
       .form-control {
         width: 100%;
         padding: 0.75rem;
@@ -63,63 +61,53 @@
         border-radius: 5px;
         font-size: 1rem;
       }
-      
+
       .error-message {
         margin-top: 0.5rem;
         color: red;
         font-size: 0.85rem;
       }
     }
-    
+
     .password-criteria {
       display: flex;
       flex-direction: column;
       gap: 0.3rem;
       margin-top: 0.5rem;
-      
+
       .criterion {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        
         .indicator {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background-color: red; /* invalide par défaut */
+          background-color: red;
         }
-        
         &.valid .indicator {
           background-color: green;
         }
-        
         &.invalid .indicator {
           background-color: red;
         }
-        
-        small {
-          font-size: 0.85rem;
-          color: #333;
-        }
       }
     }
-    
+
     .terms {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      
+
       .form-check-input {
         width: 1.2rem;
         height: 1.2rem;
       }
-      
       .form-check-label {
         font-size: 0.9rem;
       }
     }
-    
+
     .btn-submit {
       width: 100%;
       padding: 0.75rem;
@@ -133,42 +121,30 @@
         background: #0069d9;
       }
     }
+  }
 
-    .progress {
-        background-color: #e9ecef;
-        border-radius: 0.25rem;
-        overflow: hidden;
-        height: 10px;
-      }
-      
-      .progress-bar {
-        display: block;
-        height: 100%;
-        transition: width 0.3s ease;
-      }
-      
-      .bg-success {
-        background-color: #28a745 !important;
-      }
-      .bg-warning {
-        background-color: #ffc107 !important;
-      }
-      .bg-danger {
-        background-color: #dc3545 !important;
-      }
-      
+  /* Colonne de droite : Illustration + Lien en bas */
+  .right-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* ou 'space-between' si vous voulez le lien tout en bas */
     
-    .regform-illustration {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      
-      img {
-        max-width: 300px;
-        height: auto;
-        border: none;
+    .illustration-img {
+      max-width: 300px;
+      height: auto;
+      border: none;
+    }
+
+    .login-link {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
-  
+}
