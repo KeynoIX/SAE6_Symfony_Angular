@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { SportifService } from '../../../services/sportif.service';
 
 @Component({
@@ -11,7 +12,11 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder, private sportifService: SportifService) {}
+  constructor(
+    private fb: FormBuilder, 
+    private sportifService: SportifService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -20,6 +25,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
+      niveau_sportif: ['Débutant', Validators.required],
       terms: [false, Validators.requiredTrue]
     }, {
       validators: [this.passwordMatchValidator]
@@ -44,7 +50,6 @@ export class RegisterComponent implements OnInit {
     return null;
   }
 
-  // Accès aux contrôles du formulaire
   get f() {
     return this.registerForm.controls;
   }
@@ -59,18 +64,17 @@ export class RegisterComponent implements OnInit {
       password: this.registerForm.value.password,
       prenom: this.registerForm.value.prenom,
       nom: this.registerForm.value.nom,
-      // Vous pouvez ajouter ici le niveau sportif si besoin
-      niveau_sportif: 'Débutant'
+      niveau_sportif: this.registerForm.value.niveau_sportif
     };
     this.sportifService.registerSportif(payload).subscribe({
       next: (response: any) => {
         console.log('Inscription réussie : ', response);
-        alert('Inscription réussie !');
-        // Rediriger l'utilisateur ou effectuer d'autres actions
+        // Redirection vers la page d'accueil
+        this.router.navigate(['/']);
       },
       error: (error: any) => {
         console.error('Erreur lors de l’inscription : ', error);
-        alert('Erreur lors de l’inscription');
+        // Vous pouvez afficher un message d'erreur personnalisé ici
       }
     });
   }
