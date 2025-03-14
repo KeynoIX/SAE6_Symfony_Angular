@@ -19,6 +19,13 @@ class CoachController extends AbstractController
         return $this->json($coachRepository->findAll(), 200, [], ['groups' => ['coach:read', 'utilisateur:read']]);
     }
 
+    #[Route('/api/coach/{id}', methods: ['GET'])]
+public function show(Coach $coach): JsonResponse
+{
+    return $this->json($coach, 200, [], ['groups' => ['coach:read', 'utilisateur:read']]);
+}
+
+
     #[Route('/api/coach', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
