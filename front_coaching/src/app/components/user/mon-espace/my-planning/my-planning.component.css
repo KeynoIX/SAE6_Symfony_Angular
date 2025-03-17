@@ -1,0 +1,36 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  :host ::ng-deep .cal-event, 
+  :host ::ng-deep .cal-day-badge {
+    /* Masque la bullet colorée et le badge par défaut */
+    display: none !important;
+  }
+  
+  .custom-day-cell {
+    min-height: 80px;
+    padding: 4px;
+    border: 1px solid #eee;
+    position: relative;
+  }
+  
+  .day-number {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .my-event-text {
+    background-color: #f2f2f2;
+    margin: 2px 0;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  
+  .my-event-text .coach-name {
+    font-style: italic;
+    margin-left: 5px;
+  }
+  

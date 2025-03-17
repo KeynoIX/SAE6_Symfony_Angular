@@ -42,9 +42,12 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/seances, roles: PUBLIC_ACCESS }
         - { path: ^/api/exercices, roles: ROLE_SPORTIF }
-        - { path: ^/api/seances, roles: ROLE_COACH }
+    # Autoriser l'accès public pour les requêtes GET sur /api/seance/{id}
+        - { path: ^/api/seance/\d+(/|$), roles: PUBLIC_ACCESS, methods: [GET] }
+    # Pour toutes les autres méthodes sur /api/seance, exiger ROLE_COACH
         - { path: ^/api/seance, roles: ROLE_COACH }
-        - { path: ^/api, roles: PUBLIC_ACCESS } 
+        - { path: ^/api, roles: PUBLIC_ACCESS }
+
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

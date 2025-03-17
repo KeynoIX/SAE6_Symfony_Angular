@@ -5,9 +5,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 // Modules Angular
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Composants Layout
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
@@ -47,12 +50,14 @@ import { ChartComponent } from './components/shared/chart/chart.component';
 import { ExerciseCardComponent } from './components/shared/exercise-card/exercise-card.component';
 import { NotificationComponent } from './components/shared/notification/notification.component';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+
 // Composant Page 404
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
-import { ReactiveFormsModule } from '@angular/forms';
+// Intercepteur pour JWT
 import { AuthInterceptor } from './services/auth.interceptor';
-
 
 @NgModule({
   declarations: [
@@ -88,7 +93,11 @@ import { AuthInterceptor } from './services/auth.interceptor';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule  // Ajoutez cette ligne
+    ReactiveFormsModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    })
   ],
   providers: [
     {
@@ -97,6 +106,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

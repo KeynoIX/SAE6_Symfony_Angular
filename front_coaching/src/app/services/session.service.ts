@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SessionService {
-  private baseUrl = 'https://127.0.0.1:8008/api'; // Adaptez selon votre configuration
+  private baseUrl = 'http://127.0.0.1:8008/api'; // Adaptez selon votre configuration
 
   constructor(private http: HttpClient) {}
 
