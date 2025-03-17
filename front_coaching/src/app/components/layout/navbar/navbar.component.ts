@@ -17,4 +17,8 @@ export class NavbarComponent {
     this.authService.logout();
     this.router.navigateByUrl('/login');
   }
+
+  checkAdmin(){
+    return this.authService.currentAuthUserValue.isAdmin();
+  }
 }
