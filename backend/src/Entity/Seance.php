@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
 class Seance
@@ -186,5 +187,21 @@ class Seance
         $this->exercices->removeElement($exercice);
 
         return $this;
+    }
+
+    public function validateCoachAvailability(ExecutionContextInterface $context): void
+    {
+        $entityManager = $context->getObject()->getEntityManager();
+
+        $existingSeance = $entityManager->getRepository(Seance::class)->findOneBy([
+            'coach_id' => $this->coach_id,
+            'date_heure' => $this->date_heure,
+        ]);
+
+        if ($existingSeance) {
+            $context->buildViolation("Ce coach a déjà une séance prévue à cet horaire.")
+                ->atPath('date_heure')
+                ->addViolation();
+        }
     }
 }
