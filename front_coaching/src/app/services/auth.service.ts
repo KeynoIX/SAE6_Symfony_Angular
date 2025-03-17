@@ -12,6 +12,10 @@ export class AuthUser {
     return this.roles.includes("ROLE_ADMIN");
   }
 
+  isCoach(): boolean {
+    return this.roles.includes("ROLE_COACH");
+  }
+
   isLogged(): boolean {
     return this.email.length > 0;
   }
