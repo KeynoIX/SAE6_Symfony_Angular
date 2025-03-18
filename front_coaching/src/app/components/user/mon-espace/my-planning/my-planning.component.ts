@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
-import { SessionService } from '../../../../services/session.service';
+import { CalendarEvent } from 'angular-calendar';
+import { SessionService } from '../../../../../app/services/session.service';
+import { Session } from '../../../../models/session.model'; // Importation de l'interface
 
 @Component({
   selector: 'app-my-planning',
@@ -17,19 +18,16 @@ export class MyPlanningComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    // Récupérer toutes les sessions
     this.sessionService.getSessions().subscribe({
       next: (data: any[]) => {
-        // Transformation en CalendarEvent
-        this.events = data.map(session => {
+        // Utilisation de l'interface Session ici
+        this.events = data.map((session: Session) => {
           return {
             start: new Date(session.date_heure),
-            title: session.theme_seance, // Titre par défaut (pas forcément affiché si on utilise un template)
+            title: session.theme_seance,
             meta: {
               theme_seance: session.theme_seance,
-              coachName: session.coachId
-                ? `${session.coachId.prenom} ${session.coachId.nom}`
-                : 'Inconnu'
+              coachName: session.coachId ? `${session.coachId.prenom} ${session.coachId.nom}` : 'Inconnu'
             }
           } as CalendarEvent<{ theme_seance: string; coachName: string }>;
         });

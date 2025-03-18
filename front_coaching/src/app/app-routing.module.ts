@@ -28,6 +28,7 @@ import { ProfileComponent } from './components/user/mon-espace/profile/profile.c
 
 // Import du composant NotFound (page 404)
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { SportifGuard } from './guards/sportif.guard';
 
 const routes: Routes = [
   // Routes publiques
@@ -47,6 +48,13 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  
+  { 
+    path: 'mon-espace/my-planning', 
+    component: MyPlanningComponent, 
+    canActivate: [SportifGuard] 
+  },
+
   
   // Routes pour l'espace utilisateur (dashboard)
   { path: 'mon-espace', component: MonEspaceComponent,

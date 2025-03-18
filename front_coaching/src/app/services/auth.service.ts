@@ -26,8 +26,8 @@ export class AuthUser {
 })
 export class AuthService {
 
-  private apiUrlLogin = 'https://localhost:8008/api/login';
-  private apiUrlUserInfo = 'https://localhost:8008/api/user/me';
+  private apiUrlLogin = 'http://localhost:8008/api/login';
+  private apiUrlUserInfo = 'http://127.0.0.1:8008/api/user/me';
 
   private localStorageToken = 'currentToken';
 
