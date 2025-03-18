@@ -47,12 +47,10 @@ class Seance
 
     /**
      * @var Collection<int, Sportif>
-     * @Assert\Count(
-     *      min = 1,
-     *      max = 3,
-     *      minMessage = "Vous devez sélectionner au moins 1 sportif.",
-     *      maxMessage = "Vous ne pouvez sélectionner que jusqu'à 3 sportifs."
-     * )
+     * #[Assert\Count(
+     * max: 3,
+     * maxMessage: "Une séance ne peut pas avoir plus de 3 sportifs."
+     * )]
      */
     #[ORM\ManyToMany(targetEntity: Sportif::class, mappedBy: 'seances')]
     private Collection $sportifs;
@@ -162,6 +160,10 @@ class Seance
 
     public function addSportif(Sportif $sportif): static
     {
+        if ($this->sportifs->count() >= 3) {
+            throw new \Exception("Cette séance est complète.");
+        }
+
         if (!$this->sportifs->contains($sportif)) {
             $this->sportifs->add($sportif);
             $sportif->addSeance($this);
