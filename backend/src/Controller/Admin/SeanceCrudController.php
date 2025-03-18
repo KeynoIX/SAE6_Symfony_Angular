@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SeanceCrudController extends AbstractCrudController
 {
@@ -62,10 +63,36 @@ class SeanceCrudController extends AbstractCrudController
             AssociationField::new('coach_id', 'Coach')
                 ->setDisabled(!$isAdmin)
                 ->setRequired(true)
-                ->setFormTypeOption('data', $isEdit ? null : $user)
+                ->setFormTypeOption('data', $isEdit ? null : $user),
+
+            AssociationField::new('sportifs', 'Sportifs')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                    'multiple' => true,
+                    'constraints' => [new Assert\Count(
+                                    min: 1,
+                                    max: 3,
+                                    minMessage: "Vous devez sélectionner au moins 1 sportif.",
+                                    maxMessage: "Vous ne pouvez sélectionner que jusqu'à 3 sportifs."
+                                )],
+                ])
+                ->setRequired(true)
+                ->setHelp('Sélectionnez entre 1 et 3 sportifs.'),
+            AssociationField::new('exercices', 'Exercices')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                    'multiple' => true,
+                    'constraints' => [new Assert\Count(
+                        min: 1,
+                        max: 6,
+                        minMessage: "Vous devez sélectionner au moins 1 exercice.",
+                        maxMessage: "Vous ne pouvez sélectionner que jusqu'à 6 exercices."
+                    )],
+                ])
+                ->setRequired(true)
+                ->setHelp('Sélectionnez entre 1 et 6 exercices.')
         ];
     }
-
 
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void

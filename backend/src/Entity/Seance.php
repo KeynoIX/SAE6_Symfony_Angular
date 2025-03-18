@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
 class Seance
 {
@@ -45,12 +47,24 @@ class Seance
 
     /**
      * @var Collection<int, Sportif>
+     * @Assert\Count(
+     *      min = 1,
+     *      max = 3,
+     *      minMessage = "Vous devez sélectionner au moins 1 sportif.",
+     *      maxMessage = "Vous ne pouvez sélectionner que jusqu'à 3 sportifs."
+     * )
      */
     #[ORM\ManyToMany(targetEntity: Sportif::class, mappedBy: 'seances')]
     private Collection $sportifs;
 
     /**
      * @var Collection<int, Exercice>
+     * @Assert\Count(
+     *      min = 1,
+     *      max = 6,
+     *      minMessage = "Vous devez sélectionner au moins 1 exercice.",
+     *      maxMessage = "Vous ne pouvez sélectionner que jusqu'à 6 exercices."
+     * )
      */
     #[ORM\ManyToMany(targetEntity: Exercice::class, inversedBy: 'seances')]
     private Collection $exercices;

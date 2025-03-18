@@ -53,6 +53,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('Gestion des sportifs', 'fa fa-user', Sportif::class);
             yield MenuItem::linkToDashboard('Analyser statistiques', 'fa fa-folder');
             yield MenuItem::linkToCrud('Annuler séance planifiée', 'fa fa-folder', Seance::class);
+            yield MenuItem::linkToRoute('Fiche de paiement', 'fa fa-money-bill', 'admin_paiements');
         }
     }
 }
