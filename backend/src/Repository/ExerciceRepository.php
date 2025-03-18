@@ -16,6 +16,47 @@ class ExerciceRepository extends ServiceEntityRepository
         parent::__construct($registry, Exercice::class);
     }
 
+    public function findTopExercicesBySportifAndPeriod(string $sportifId, \DateTime $dateMin, \DateTime $dateMax, int $limit = 3)
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e.id, e.nom, COUNT(e.id) as frequence')
+            ->join('e.seances', 's')
+            ->join('s.sportifs', 'sp')
+            ->where('sp.id = :sportifId')
+            ->andWhere('s.date_heure >= :dateMin')
+            ->andWhere('s.date_heure <= :dateMax')
+            ->andWhere('s.statut = :statut')
+            ->setParameter('sportifId', $sportifId)
+            ->setParameter('dateMin', $dateMin)
+            ->setParameter('dateMax', $dateMax)
+            ->setParameter('statut', 'validée')
+            ->groupBy('e.id')
+            ->orderBy('frequence', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function calculateTotalDuration(string $sportifId, \DateTime $dateMin, \DateTime $dateMax)
+    {
+        $result = $this->createQueryBuilder('e')
+            ->select('SUM(e.duree_estimee) as totalDuration')
+            ->join('e.seances', 's')
+            ->join('s.sportifs', 'sp')
+            ->where('sp.id = :sportifId')
+            ->andWhere('s.date_heure >= :dateMin')
+            ->andWhere('s.date_heure <= :dateMax')
+            ->andWhere('s.statut = :statut')
+            ->setParameter('sportifId', $sportifId)
+            ->setParameter('dateMin', $dateMin)
+            ->setParameter('dateMax', $dateMax)
+            ->setParameter('statut', 'validée')
+            ->getQuery()
+            ->getSingleScalarResult();
+            
+        return $result ? (int)$result : 0;
+    }
+
     //    /**
     //     * @return Exercice[] Returns an array of Exercice objects
     //     */
