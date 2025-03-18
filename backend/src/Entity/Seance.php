@@ -8,9 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
 class Seance
@@ -47,22 +44,12 @@ class Seance
 
     /**
      * @var Collection<int, Sportif>
-     * #[Assert\Count(
-     * max: 3,
-     * maxMessage: "Une séance ne peut pas avoir plus de 3 sportifs."
-     * )]
      */
     #[ORM\ManyToMany(targetEntity: Sportif::class, mappedBy: 'seances')]
     private Collection $sportifs;
 
     /**
      * @var Collection<int, Exercice>
-     * @Assert\Count(
-     *      min = 1,
-     *      max = 6,
-     *      minMessage = "Vous devez sélectionner au moins 1 exercice.",
-     *      maxMessage = "Vous ne pouvez sélectionner que jusqu'à 6 exercices."
-     * )
      */
     #[ORM\ManyToMany(targetEntity: Exercice::class, inversedBy: 'seances')]
     private Collection $exercices;
@@ -160,10 +147,6 @@ class Seance
 
     public function addSportif(Sportif $sportif): static
     {
-        if ($this->sportifs->count() >= 3) {
-            throw new \Exception("Cette séance est complète.");
-        }
-
         if (!$this->sportifs->contains($sportif)) {
             $this->sportifs->add($sportif);
             $sportif->addSeance($this);
@@ -203,21 +186,5 @@ class Seance
         $this->exercices->removeElement($exercice);
 
         return $this;
-    }
-
-    public function validateCoachAvailability(ExecutionContextInterface $context): void
-    {
-        $entityManager = $context->getObject()->getEntityManager();
-
-        $existingSeance = $entityManager->getRepository(Seance::class)->findOneBy([
-            'coach_id' => $this->coach_id,
-            'date_heure' => $this->date_heure,
-        ]);
-
-        if ($existingSeance) {
-            $context->buildViolation("Ce coach a déjà une séance prévue à cet horaire.")
-                ->atPath('date_heure')
-                ->addViolation();
-        }
     }
 }

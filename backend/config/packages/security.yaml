@@ -18,10 +18,6 @@ security:
                 username_path: email
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
         api:
             pattern: ^/api
             stateless: true
@@ -32,11 +28,6 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            custom_authenticator: App\Security\BackOfficeAuthenticator
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -51,9 +42,12 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/seances, roles: PUBLIC_ACCESS }
         - { path: ^/api/exercices, roles: ROLE_SPORTIF }
-        - { path: ^/api/seances, roles: ROLE_COACH }
+    # Autoriser l'accès public pour les requêtes GET sur /api/seance/{id}
+        - { path: ^/api/seance/\d+(/|$), roles: PUBLIC_ACCESS, methods: [GET] }
+    # Pour toutes les autres méthodes sur /api/seance, exiger ROLE_COACH
         - { path: ^/api/seance, roles: ROLE_COACH }
-        - { path: ^/api, roles: PUBLIC_ACCESS } 
+        - { path: ^/api, roles: PUBLIC_ACCESS }
+
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

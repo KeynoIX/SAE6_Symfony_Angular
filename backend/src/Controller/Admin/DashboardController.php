@@ -11,25 +11,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
-
-    private Security $security;
-
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
         return $this->render('admin/dashboard.html.twig');
-    }
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
     }
 
     public function configureDashboard(): Dashboard
@@ -40,20 +31,12 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        if ($this->security->isGranted('ROLE_ADMIN') || $this->security->isGranted('ROLE_COACH')) {
-            yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-
-            yield MenuItem::section('Gestion des séances');
-            yield MenuItem::linkToCrud('Créer/modifier séances', 'fa fa-folder', Seance::class);
-        }
-        
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            yield MenuItem::section('Administration');
-            yield MenuItem::linkToCrud('Gestion des coachs', 'fa fa-user', Coach::class);
-            yield MenuItem::linkToCrud('Gestion des sportifs', 'fa fa-user', Sportif::class);
-            yield MenuItem::linkToDashboard('Analyser statistiques', 'fa fa-folder');
-            yield MenuItem::linkToCrud('Annuler séance planifiée', 'fa fa-folder', Seance::class);
-            yield MenuItem::linkToRoute('Fiche de paiement', 'fa fa-money-bill', 'admin_paiements');
-        }
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::section('Gestion des utilisateurs');
+        yield MenuItem::linkToCrud('Coachs', 'fa fa-user', Coach::class);
+        yield MenuItem::linkToCrud('Sportifs', 'fa fa-user', Sportif::class);
+        yield MenuItem::section('Gestion des séances');
+        yield MenuItem::linkToCrud('Séances', 'fa fa-folder', Seance::class);
+        yield MenuItem::linkToCrud('Exercices', 'fa fa-folder', Exercice::class);
     }
 }
