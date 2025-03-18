@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SportifService } from '../../../services/sportif.service';
 
 @Component({
   selector: 'app-register',
@@ -10,13 +12,11 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
 
-  // Pourcentage de la force du mot de passe
-  passwordStrength = 0;
-
-  // Indique si on refuse l'inscription faute de force
-  forceInsuffisante = false;
-
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder, 
+    private sportifService: SportifService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -25,44 +25,14 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
+      niveau_sportif: ['Débutant', Validators.required],
       terms: [false, Validators.requiredTrue]
     }, {
       validators: [this.passwordMatchValidator]
     });
-
-    // Calcul de la force du mot de passe à chaque changement
-    this.registerForm.get('password')?.valueChanges.subscribe(value => {
-      this.passwordStrength = this.calculatePasswordStrength(value);
-      // Réinitialise l'erreur de force si l'utilisateur retape
-      if (this.forceInsuffisante && this.passwordStrength >= 70) {
-        this.forceInsuffisante = false;
-      }
-    });
   }
 
-  // Exemple d'un calcul plus élaboré
-  // +20% si longueur >= 8
-  // +10% si longueur >= 12
-  // +10% si longueur >= 16
-  // +15% si contient une majuscule
-  // +15% si contient un chiffre
-  // +15% si contient un caractère spécial
-  calculatePasswordStrength(password: string): number {
-    let strength = 0;
-
-    if (password.length >= 8)  { strength += 20; }
-    if (password.length >= 12) { strength += 10; }
-    if (password.length >= 16) { strength += 10; }
-
-    if (/[A-Z]/.test(password))  { strength += 15; }
-    if (/\d/.test(password))      { strength += 15; }
-    if (/[!@#$&*]/.test(password)) { strength += 15; }
-
-    // Cap à 100%
-    return Math.min(strength, 100);
-  }
-
-  // Validator personnalisé : mot de passe = confirmation
+  // Validator personnalisé pour vérifier que le mot de passe correspond à la confirmation
   passwordMatchValidator(form: AbstractControl): null {
     const password = form.get('password')?.value;
     const confirmPassword = form.get('confirmPassword')?.value;
@@ -86,19 +56,26 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-
-    // Vérification standard des champs requis, etc.
     if (this.registerForm.invalid) {
       return;
     }
-
-    // Vérification force du mot de passe
-    if (this.passwordStrength < 70) {
-      this.forceInsuffisante = true;
-      return;
-    }
-
-    console.log('Inscription réussie : ', this.registerForm.value);
-    // Ici, vous pouvez gérer la logique d’inscription (ex: appel API)
+    const payload = {
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
+      prenom: this.registerForm.value.prenom,
+      nom: this.registerForm.value.nom,
+      niveau_sportif: this.registerForm.value.niveau_sportif
+    };
+    this.sportifService.registerSportif(payload).subscribe({
+      next: (response: any) => {
+        console.log('Inscription réussie : ', response);
+        // Redirection vers la page d'accueil
+        this.router.navigate(['/']);
+      },
+      error: (error: any) => {
+        console.error('Erreur lors de l’inscription : ', error);
+        // Vous pouvez afficher un message d'erreur personnalisé ici
+      }
+    });
   }
 }

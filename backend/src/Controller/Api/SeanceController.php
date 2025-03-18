@@ -73,6 +73,12 @@ class SeanceController extends AbstractController
         return $this->json($seance, 200, [], ['groups' => 'seance:read']);
     }
 
+    #[Route('/api/seance/{id}', methods: ['GET'])]
+    public function show(Seance $seance): JsonResponse
+    {
+        return $this->json($seance, 200, [], ['groups' => 'seance:read']);
+    }
+
     #[Route('/api/seance/{id}', methods: ['DELETE'])]
     public function delete(Seance $seance, EntityManagerInterface $em): JsonResponse
     {
@@ -80,5 +86,34 @@ class SeanceController extends AbstractController
         $em->flush();
 
         return new JsonResponse(['message' => 'Séance supprimée'], 204);
+    }
+
+    #[Route('/api/seance/{id}/inscription', methods: ['POST'])]
+    public function inscrireSportif(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $seance = $em->getRepository(Seance::class)->find($id);
+        $sportif = $this->getUser();
+
+        if (!$seance) {
+            return $this->json(['message' => 'Séance non trouvée'], 404);
+        }
+
+        if ($seance->getSportifs()->count() >= 3) {
+            return $this->json(['message' => 'Cette séance est complète.'], 400);
+        }
+
+        if ($seance->getSportifs()->contains($sportif)) {
+            return $this->json(['message' => 'Vous êtes déjà inscrit à cette séance.'], 400);
+        }
+
+        try {
+            $seance->addSportif($sportif);
+            $em->persist($seance);
+            $em->flush();
+
+            return $this->json(['message' => 'Inscription réussie'], 200);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

@@ -1,1 +1,22 @@
-<p>session-detail works!</p>
+<div class="container my-4">
+    <div *ngIf="loading" class="text-center">Chargement...</div>
+    <div *ngIf="error" class="text-danger text-center">{{ error }}</div>
+    <div *ngIf="!loading && !error && session">
+      <h2 class="mb-4 text-center">{{ session.theme_seance }} - {{ session.type_seance }}</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>
+            <strong>Date &amp; Heure :</strong> {{ session.date_heure | date:'short' }}
+          </p>
+          <p>
+            <strong>Niveau :</strong> {{ session.niveau_seance }}
+          </p>
+          <p>
+            <strong>Statut :</strong> {{ session.statut }}
+          </p>
+          <!-- Vous pouvez ajouter d'autres informations ici si besoin -->
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,25 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block content %}
+	<h1>Fiche de paiement des coachs</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Coach</th>
+				<th>Nombre de séances validées</th>
+				<th>Tarif horaire (€)</th>
+				<th>Total dû (€)</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for paiement in paiements %}
+				<tr>
+					<td>{{ paiement.coach }}</td>
+					<td>{{ paiement.seances_validees }}</td>
+					<td>{{ paiement.tarif_horaire }}</td>
+					<td>{{ paiement.total_du }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

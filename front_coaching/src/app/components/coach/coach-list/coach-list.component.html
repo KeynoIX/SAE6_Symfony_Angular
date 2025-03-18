@@ -1,1 +1,21 @@
-<p>coach-list works!</p>
+<div class="container my-4">
+    <h2 class="text-center mb-4">Liste des Coachs</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4" *ngFor="let coach of coachs">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ coach.prenom }} {{ coach.nom }}</h5>
+            <p class="card-text">
+              <strong>Email :</strong> {{ coach.email }}<br>
+              <strong>Spécialités :</strong> {{ coach.specialites ? coach.specialites.join(', ') : '-' }}<br>
+              <strong>Tarif horaire :</strong> {{ coach.tarif_horaire && coach.tarif_horaire > 0 ? coach.tarif_horaire + ' €' : 'Non renseigné' }}
+            </p>
+          </div>
+          <div class="card-footer text-center">
+            <a [routerLink]="['/coach', coach.id]" class="btn btn-primary">Voir les détails</a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
