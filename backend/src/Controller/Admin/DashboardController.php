@@ -45,6 +45,7 @@ class DashboardController extends AbstractDashboardController
 
             yield MenuItem::section('Gestion des séances');
             yield MenuItem::linkToCrud('Créer/modifier séances', 'fa fa-folder', Seance::class);
+            yield MenuItem::linkToRoute('Séances à valider', 'fa fa-check', 'admin_seances');
         }
         
         if ($this->security->isGranted('ROLE_ADMIN')) {

@@ -32,6 +32,7 @@ class SeanceCrudController extends AbstractCrudController
         $isEdit = $pageName === 'edit';
         $isAdmin = in_array('ROLE_ADMIN', $user->getRoles());
         $isCoach = in_array('ROLE_COACH', $user->getRoles());
+        $entityInstance = $this->getContext()->getEntity()->getInstance();
 
         return [
             DateTimeField::new('date_heure', 'Date et heure')
@@ -63,8 +64,11 @@ class SeanceCrudController extends AbstractCrudController
             AssociationField::new('coach_id', 'Coach')
                 ->setDisabled(!$isAdmin)
                 ->setRequired(true)
-                ->setFormTypeOption('data', $isEdit ? null : $user),
-
+                ->setFormTypeOptions([
+                    'choice_label' => 'nom',
+                    'data' => $isEdit && $entityInstance ? $entityInstance->getCoachId() : $user ?? null,
+                ]),
+            
             AssociationField::new('sportifs', 'Sportifs')
                 ->setFormTypeOptions([
                     'by_reference' => false,
