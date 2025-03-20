@@ -1,31 +1,32 @@
-<div class="container my-4">
-    <div *ngIf="loading" class="text-center">Chargement...</div>
-    <div *ngIf="error" class="text-danger text-center">{{ error }}</div>
-    <div *ngIf="!loading && !error && coach">
-      <h2 class="mb-4 text-center">{{ coach.prenom }} {{ coach.nom }}</h2>
-      <div class="card">
-        <div class="card-body">
-          <p><strong>Email :</strong> {{ coach.email }}</p>
-          <p>
-            <strong>Spécialités :</strong>
-            <span *ngIf="coach.specialites && coach.specialites.length > 0">
-              {{ coach.specialites.join(', ') }}
-            </span>
-            <span *ngIf="!coach.specialites || coach.specialites.length === 0">
-              Non renseigné
-            </span>
-          </p>
-          <p>
-            <strong>Tarif horaire :</strong>
-            <span *ngIf="coach.tarif_horaire && coach.tarif_horaire > 0">
-              {{ coach.tarif_horaire }} €
-            </span>
-            <span *ngIf="!coach.tarif_horaire || coach.tarif_horaire <= 0">
-              Non renseigné
-            </span>
-          </p>
-        </div>
+<div class="container my-4 coach-detail-container">
+  <div *ngIf="loading" class="text-center">Chargement...</div>
+  <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+  <div *ngIf="!loading && !error && coach" class="coach-detail-card">
+    <h2 class="text-center mb-4">{{ coach.prenom }} {{ coach.nom }}</h2>
+    <div class="card">
+      <!-- Vous pouvez ajouter ici un banner ou une image du coach -->
+      <img src="/assets/coach-banner.jpg" alt="Image du Coach" class="card-img-top coach-banner">
+      <div class="card-body">
+        <p class="card-text"><strong>Email :</strong> {{ coach.email }}</p>
+        <p class="card-text">
+          <strong>Spécialités :</strong>
+          <span *ngIf="coach.specialites && coach.specialites.length > 0">
+            {{ coach.specialites.join(', ') }}
+          </span>
+          <span *ngIf="!coach.specialites || coach.specialites.length === 0">
+            Non renseigné
+          </span>
+        </p>
+        <p class="card-text">
+          <strong>Tarif horaire :</strong>
+          <span *ngIf="coach.tarif_horaire && coach.tarif_horaire > 0">
+            {{ coach.tarif_horaire }} €
+          </span>
+          <span *ngIf="!coach.tarif_horaire || coach.tarif_horaire <= 0">
+            Non renseigné
+          </span>
+        </p>
       </div>
     </div>
   </div>
-  
+</div>

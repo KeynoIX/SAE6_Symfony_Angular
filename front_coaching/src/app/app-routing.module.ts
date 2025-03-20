@@ -54,6 +54,11 @@ const routes: Routes = [
     component: MyPlanningComponent, 
     canActivate: [SportifGuard] 
   },
+  {
+    path: 'mes-reservations',
+    component: MesReservationsComponent,
+    canActivate: [SportifGuard]
+  },
 
   
   // Routes pour l'espace utilisateur (dashboard)

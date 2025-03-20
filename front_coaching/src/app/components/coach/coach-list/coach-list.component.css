@@ -1,30 +1,59 @@
-.container {
-    padding: 2rem 0;
+.coaches-container {
+  padding: 2rem 0;
+  background-color: #fff; 
+}
+
+/* Style global de la carte */
+.coach-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  /* Effet de survol pour rehausser la carte */
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
   }
-  
-  .card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  /* Image du coach en haut de la carte */
+  .coach-img {
+    border-radius: 10px 10px 0 0;
+    height: 200px;
+    object-fit: cover;
+    background-color: #f8f8f8; 
   }
-  
-  .card-title {
-    font-weight: bold;
-    margin-bottom: 1rem;
+
+  /* Corps de la carte */
+  .card-body {
+    background-color: #fafafa;
+    color: #333;
+    .card-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: #0d47a1; /* Bleu plus soutenu */
+    }
+    .card-text {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      strong {
+        color: #1e88e5;
+      }
+    }
   }
-  
-  .card-text {
-    font-size: 0.95rem;
-    line-height: 1.4;
+
+  /* Pied de la carte */
+  .card-footer {
+    background-color: #f0f0f0;
+    border-radius: 0 0 10px 10px;
+    .btn-primary {
+      background-color: #1e88e5;
+      border-color: #1e88e5;
+      transition: background-color 0.3s ease;
+      &:hover {
+        background-color: #1565c0;
+        border-color: #0d47a1;
+      }
+    }
   }
-  
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
-  }
-  
+}
