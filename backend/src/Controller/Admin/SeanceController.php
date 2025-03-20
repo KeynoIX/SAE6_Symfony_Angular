@@ -19,8 +19,7 @@ class SeanceController extends AbstractController
     {
         $user = $this->getUser();
         $seances = $entityManager->getRepository(Seance::class)->findBy([
-            'coach_id' => $user,
-            'statut' => 'Prévue'
+            'coach_id' => $user
         ]);
 
         return $this->render('admin/seances.html.twig', [
@@ -42,7 +41,9 @@ class SeanceController extends AbstractController
         $entityManager->persist($seance);
         $entityManager->flush();
 
-        return $this->redirectToRoute('admin_seances');
+        $this->addFlash('success', 'La séance a été validée avec succès.');
+
+        return $this->forward('App\\Controller\\Admin\\SeanceController::index');
     }
 
     #[Route('/seance/presence/{id}/{sportifId}/{presence}', name: 'marquer_presence')]
@@ -55,7 +56,6 @@ class SeanceController extends AbstractController
             throw $this->createNotFoundException('Séance ou sportif introuvable.');
         }
 
-        // Vérifie si une participation existe déjà
         $participation = $entityManager->getRepository(Participation::class)->findOneBy([
             'seance' => $seance,
             'sportif' => $sportif
@@ -72,6 +72,8 @@ class SeanceController extends AbstractController
         $entityManager->persist($participation);
         $entityManager->flush();
 
-        return $this->redirectToRoute('admin_seances');
+        $this->addFlash('success', 'La séance a été validée avec succès.');
+
+        return $this->forward('App\\Controller\\Admin\\SeanceController::index');
     }
 }

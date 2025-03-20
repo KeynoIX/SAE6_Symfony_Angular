@@ -16,7 +16,9 @@ class SeanceController extends AbstractController
     #[Route('/api/seances', methods: ['GET'])]
     public function index(SeanceRepository $seanceRepository): JsonResponse
     {
-        return $this->json($seanceRepository->findAll(), 200, [], ['groups' => 'seance:read']);
+        $seances = $seanceRepository->findAll();
+
+        return $this->json($seances, 200, [], ['groups' => 'seance:read']);
     }
 
     #[Route('/api/seance', methods: ['POST'])]

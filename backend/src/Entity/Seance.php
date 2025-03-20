@@ -240,9 +240,10 @@ class Seance
     }
 
     public function removeParticipation(Participation $participation): self
-    {
-        if ($this->participations->removeElement($participation)) {
-        }
-        return $this;
+{
+    if ($this->participations->removeElement($participation)) {
     }
+    return $this;
+}
+
 }

@@ -10,9 +10,18 @@ use App\Entity\Utilisateur;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+
+    private UserPasswordHasherInterface $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
@@ -27,7 +36,8 @@ class AppFixtures extends Fixture
             $coach->setTarifHoraire($faker->randomFloat(2, 20, 100));
             $coach->setSpecialites($faker->words);
 
-            $coach->setPassword("coach");
+            $hashedPassword = $this->passwordHasher->hashPassword($coach, 'coach');
+            $coach->setPassword($hashedPassword);
 
             $manager->persist($coach);
             $coachs[] = $coach;
@@ -43,7 +53,8 @@ class AppFixtures extends Fixture
             $sportif->setNiveauSportif($faker->randomElement(['Débutant', 'Intermédiaire', 'Avancé']));
             $sportif->setDateInscription($faker->dateTimeBetween('-1 year', 'now'));
 
-            $sportif->setPassword("sportif");
+            $hashedPassword = $this->passwordHasher->hashPassword($sportif, 'sportif');
+            $sportif->setPassword($hashedPassword);
 
             $manager->persist($sportif);
             $sportifs[] = $sportif;
@@ -51,13 +62,27 @@ class AppFixtures extends Fixture
 
         $admin = new Utilisateur();
         $admin->setEmail("admin@admin.fr");
-        $admin->setPrenom("");
+        $admin->setPrenom($faker->firstName);
         $admin->setNom($faker->lastName);
         $admin->setRoles(['ROLE_ADMIN']);
 
-        $admin->setPassword("admin");
+        $hashedPassword = $this->passwordHasher->hashPassword($admin, 'admin');
+        $admin->setPassword($hashedPassword);
 
         $manager->persist($admin);
+
+        $coach = new Coach();
+        $coach->setEmail("coach@coach.fr");
+        $coach->setPrenom($faker->firstName);
+        $coach->setNom($faker->lastName);
+        $coach->setRoles(['ROLE_COACH']);
+        $coach->setTarifHoraire($faker->randomFloat(2, 20, 100));
+        $coach->setSpecialites($faker->words);
+
+        $hashedPassword = $this->passwordHasher->hashPassword($coach, 'coach');
+        $coach->setPassword($hashedPassword);
+
+        $manager->persist($coach);
 
         $exercices = [];
         for ($i = 0; $i < 15; $i++) {
@@ -81,7 +106,7 @@ class AppFixtures extends Fixture
 
             $seance->setCoachId($faker->randomElement($coachs));
 
-            for ($j = 0; $j < rand(2, 5); $j++) {
+            for ($j = 0; $j < rand(1, 3); $j++) {
                 $seance->addSportif($faker->randomElement($sportifs));
             }
 
