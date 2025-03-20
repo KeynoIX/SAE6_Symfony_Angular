@@ -102,7 +102,7 @@ class AppFixtures extends Fixture
             $seance->setTypeSeance($faker->randomElement(['Musculation', 'Cardio', 'Yoga']));
             $seance->setThemeSeance($faker->word);
             $seance->setNiveauSeance($faker->randomElement(['Débutant', 'Intermédiaire', 'Avancé']));
-            $seance->setStatut($faker->randomElement(['Confirmée', 'Annulée', 'Reportée']));
+            $seance->setStatut($faker->randomElement(['Prévue', 'Validée', 'Annulée']));
 
             $seance->setCoachId($faker->randomElement($coachs));
 

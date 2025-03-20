@@ -153,4 +153,20 @@ class SeanceController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], 400);
         }
     }
+
+    #[Route('/api/sportif/{id}/seances/validees', methods: ['GET'])]
+    public function getSeancesValidees(string $id, EntityManagerInterface $em): JsonResponse
+    {
+        $seances = $em->getRepository(Seance::class)->createQueryBuilder('s')
+            ->join('s.sportifs', 'sp')
+            ->where('sp.id = :sportifId')
+            ->andWhere('s.statut = :statut')
+            ->setParameter('sportifId', $id)
+            ->setParameter('statut', 'Validée')
+            ->orderBy('s.date_heure', 'ASC') 
+            ->getQuery()
+            ->getResult();
+        
+        return $this->json($seances, 200, [], ['groups' => 'seance:read']);
+    }
 }

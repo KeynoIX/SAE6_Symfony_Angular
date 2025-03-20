@@ -76,4 +76,26 @@ class SeanceController extends AbstractController
 
         return $this->forward('App\\Controller\\Admin\\SeanceController::index');
     }
+
+    #[Route('/seances/historique', name: 'admin_seances_historique')]
+    public function historique(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $now = new \DateTime();
+        
+        $seances = $entityManager->getRepository(Seance::class)->createQueryBuilder('s')
+            ->where('s.coach_id = :coach')
+            ->andWhere('s.statut = :statut')
+            ->andWhere('s.date_heure < :now')
+            ->setParameter('coach', $user)
+            ->setParameter('statut', 'Validée')
+            ->setParameter('now', $now)
+            ->orderBy('s.date_heure', 'DESC')
+            ->getQuery()
+            ->getResult();
+    
+        return $this->render('admin/seances_historique.html.twig', [
+            'seances' => $seances
+        ]);
+}
 }
