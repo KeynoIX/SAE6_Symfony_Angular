@@ -1,48 +1,53 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 2rem 0;
 }
 
 /* Personnalisation de la vue mensuelle d'angular-calendar */
 :host ::ng-deep .cal-month-view {
   background: #fff;
   border: 1px solid #e3e3e3;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Personnalisation de chaque cellule du calendrier */
+/* Style pour les cellules du calendrier */
 .custom-day-cell {
-  min-height: 80px;
-  padding: 4px;
+  min-height: 100px; /* Pour un aspect carré */
+  padding: 0.5rem;
   border: 1px solid #f0f0f0;
   border-radius: 4px;
   background-color: #fafafa;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
+/* Numéro de jour en haut à gauche */
 .day-number {
   font-weight: bold;
-  margin-bottom: 4px;
+  font-size: 1.2rem;
 }
 
-.day-events {
-  flex: 1;
-  overflow-y: auto;
-}
-
-/* Affichage personnalisé pour chaque événement */
+/* Style pour les événements affichés dans une cellule */
 .my-event-text {
   background-color: #d1ecf1;
   color: #0c5460;
-  padding: 2px 4px;
+  padding: 0.25rem 0.5rem;
   border-radius: 4px;
-  margin-bottom: 2px;
-  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  text-align: center;
 }
 
+/* Lien pour l'événement */
+.event-link {
+  text-decoration: none;
+  display: block;
+}
+
+/* Style pour le nom du coach */
 .coach-name {
   font-style: italic;
   margin-left: 5px;

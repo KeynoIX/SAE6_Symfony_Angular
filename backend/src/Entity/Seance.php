@@ -53,6 +53,7 @@ class Seance
      * )]
      */
     #[ORM\ManyToMany(targetEntity: Sportif::class, mappedBy: 'seances')]
+    #[Groups(['seance:read'])]
     private Collection $sportifs;
 
     /**
@@ -64,8 +65,10 @@ class Seance
      *      maxMessage = "Vous ne pouvez sélectionner que jusqu'à 6 exercices."
      * )
      */
-    #[ORM\ManyToMany(targetEntity: Exercice::class, inversedBy: 'seances')]
+    #[ORM\ManyToMany(targetEntity: Exercice::class, inversedBy: 'seances', fetch:"EAGER")]
+    #[Groups(['seance:read', 'exercice:read'])]
     private Collection $exercices;
+    
 
     public function __construct()
     {
@@ -160,7 +163,7 @@ class Seance
 
     public function addSportif(Sportif $sportif): static
     {
-        if ($this->sportifs->count() >= 3) {
+        if ($this->sportifs->count() >= 5) {
             throw new \Exception("Cette séance est complète.");
         }
 

@@ -1,6 +1,6 @@
 <div class="container my-4">
-  <!-- Contenu d'accueil -->
-  <div class="text-center">
+  <!-- Section Accueil -->
+  <div class="hero text-center">
     <h1 class="display-4">Bienvenue sur Sport & Coaching!</h1>
     <p class="lead">
       Découvrez nos coachs, réservez vos séances et suivez votre progression.
@@ -14,9 +14,9 @@
     </div>
   </div>
 
-  <!-- Section Calendrier -->
+  <!-- Section Calendrier / Planning -->
   <div class="my-planning-section mt-5">
-    <h2 class="text-center mb-4">Mon Planning</h2>
+    <h2 class="text-center mb-4">Planning</h2>
     <div *ngIf="loading" class="text-center">Chargement...</div>
     <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
     <div *ngIf="!loading && !error">
@@ -27,7 +27,7 @@
         [eventTemplate]="eventTemplate">
       </mwl-calendar-month-view>
 
-      <!-- Template personnalisé pour chaque cellule -->
+      <!-- Template personnalisé pour chaque cellule du calendrier -->
       <ng-template #cellTemplate let-day="day">
         <div class="custom-day-cell">
           <div class="day-number">{{ day.date | date:'d' }}</div>
@@ -42,12 +42,16 @@
         </div>
       </ng-template>
 
-      <!-- Template personnalisé pour chaque événement -->
+      <!-- Template personnalisé pour chaque événement cliquable -->
       <ng-template #eventTemplate let-event="event">
-        <div class="my-event-text">
-          <strong>{{ event.meta.theme_seance }}</strong>
-          <span class="coach-name">(Coach : {{ event.meta.coachName }})</span>
-        </div>
+        <a [routerLink]="['/seance', event.meta.sessionId]" class="event-link">
+          <div class="my-event-text">
+            <strong>{{ event.meta.theme_seance }}</strong>
+            <span *ngIf="event.meta.coachName" class="coach-name">
+              (Coach : {{ event.meta.coachName }})
+            </span>
+          </div>
+        </a>
       </ng-template>
     </div>
   </div>

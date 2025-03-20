@@ -1,20 +1,48 @@
+/* Conteneur centralisé et largeur maximale pour un rendu "carré" */
 .container {
-    padding: 2rem 0;
-  }
-  
-  .card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-body {
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-  
-  h2 {
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Carte avec bords carrés et style épuré */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 0; /* coins carrés */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style du corps de la carte */
+.card-body {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 1.5rem;
+}
+
+/* Titre principal */
+h2 {
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+/* Style de la liste des exercices */
+.exercises h4 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.list-group {
+  border: 1px solid #ddd;
+  border-radius: 0; /* bords carrés */
+}
+
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #eee;
+  border-radius: 0; /* coins carrés */
+  padding: 0.75rem 1.25rem;
+}
+
+.list-group-item:last-child {
+  border-bottom: 0;
+}

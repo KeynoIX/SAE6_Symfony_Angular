@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
 // AppRouting et composant racine
 import { AppRoutingModule } from './app-routing.module';
@@ -52,12 +53,16 @@ import { NotificationComponent } from './components/shared/notification/notifica
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-
 // Composant Page 404
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 // Intercepteur pour JWT
 import { AuthInterceptor } from './services/auth.interceptor';
+import { AuthService } from './services/auth.service';
+
+export function initializeAuth(authService: AuthService) {
+  return (): Promise<any> => authService.initializeToken();
+}
 
 @NgModule({
   declarations: [
@@ -91,6 +96,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    RouterModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -103,6 +109,12 @@ import { AuthInterceptor } from './services/auth.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeAuth,
+      deps: [AuthService],
       multi: true
     }
   ],

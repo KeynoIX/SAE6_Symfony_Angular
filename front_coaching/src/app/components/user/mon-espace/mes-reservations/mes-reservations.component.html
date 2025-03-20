@@ -1,1 +1,35 @@
-<p>mes-reservations works!</p>
+<div class="container my-4">
+  <h2 class="text-center mb-4">Mes Réservations</h2>
+
+  <div *ngIf="loading" class="text-center">Chargement...</div>
+  <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+
+  <div *ngIf="!loading && !error && reservations.length === 0" class="text-center">
+    <p>Aucune réservation trouvée.</p>
+  </div>
+
+  <div *ngIf="!loading && !error && reservations.length > 0">
+    <div class="row">
+      <div class="col-md-6 mb-4" *ngFor="let session of reservations">
+        <div class="card shadow session-card">
+          <div class="card-header bg-primary text-white">
+            {{ session.theme_seance }} - {{ session.type_seance }}
+          </div>
+          <div class="card-body">
+            <p><strong>Date &amp; Heure :</strong> {{ session.date_heure | date:'short' }}</p>
+            <p><strong>Niveau :</strong> {{ session.niveau_seance }}</p>
+            <p><strong>Statut :</strong> {{ session.statut }}</p>
+            <p *ngIf="session.coachId">
+              <strong>Coach :</strong> {{ session.coachId.prenom }} {{ session.coachId.nom }}
+            </p>
+          </div>
+          <div class="card-footer text-right">
+            <button class="btn btn-danger btn-sm" (click)="cancelReservation(session)">
+              Annuler réservation
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
