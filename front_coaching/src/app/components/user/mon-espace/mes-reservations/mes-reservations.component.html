@@ -24,7 +24,12 @@
             </p>
           </div>
           <div class="card-footer text-right">
-            <button class="btn btn-danger btn-sm" (click)="cancelReservation(session)">
+            <!-- Bouton pour accéder aux détails de la séance -->
+            <button class="btn btn-info btn-sm" [routerLink]="['/seance', session.id]">
+              Détails
+            </button>
+            <!-- Bouton pour annuler la réservation -->
+            <button class="btn btn-danger btn-sm ml-2" (click)="cancelReservation(session)">
               Annuler réservation
             </button>
           </div>
