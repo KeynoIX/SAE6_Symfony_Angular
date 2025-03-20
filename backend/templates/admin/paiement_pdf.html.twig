@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Fiche de Paie - {{ coach.getPrenom }} {{ coach.getNom }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Fiche de Paie</h1>
+    <p><strong>Coach :</strong> {{ coach.getPrenom }} {{ coach.getNom }}</p>
+    <p><strong>Période :</strong> {{ periode }}</p>
+    <table>
+        <tr>
+            <th>Nombre total d'heures</th>
+            <td>{{ totalHeures }} h</td>
+        </tr>
+        <tr>
+            <th>Tarif horaire</th>
+            <td>{{ tarifHoraire }} €</td>
+        </tr>
+        <tr>
+            <th>Montant total dû</th>
+            <td>{{ montantTotal }} €</td>
+        </tr>
+    </table>
+</body>
+</html>

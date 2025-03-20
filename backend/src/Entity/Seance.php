@@ -56,6 +56,10 @@ class Seance
     #[Groups(['seance:read'])]
     private Collection $sportifs;
 
+    #[ORM\OneToMany(targetEntity: Participation::class, mappedBy: "seance", cascade: ["persist", "remove"])]
+    private $participations;
+
+
     /**
      * @var Collection<int, Exercice>
      * @Assert\Count(
@@ -223,4 +227,26 @@ class Seance
                 ->addViolation();
         }
     }
+
+    public function getParticipations(): Collection
+    {
+        return $this->participations;
+    }
+
+    public function addParticipation(Participation $participation): self
+    {
+        if (!$this->participations->contains($participation)) {
+            $this->participations[] = $participation;
+            $participation->setSeance($this);
+        }
+        return $this;
+    }
+
+    public function removeParticipation(Participation $participation): self
+{
+    if ($this->participations->removeElement($participation)) {
+    }
+    return $this;
+}
+
 }
