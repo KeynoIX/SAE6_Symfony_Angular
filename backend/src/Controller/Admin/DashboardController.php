@@ -45,13 +45,14 @@ class DashboardController extends AbstractDashboardController
 
             yield MenuItem::section('Gestion des séances');
             yield MenuItem::linkToCrud('Créer/modifier séances', 'fa fa-folder', Seance::class);
+            yield MenuItem::linkToRoute('Séances à valider', 'fa fa-check', 'admin_seances');
         }
         
         if ($this->security->isGranted('ROLE_ADMIN')) {
             yield MenuItem::section('Administration');
             yield MenuItem::linkToCrud('Gestion des coachs', 'fa fa-user', Coach::class);
             yield MenuItem::linkToCrud('Gestion des sportifs', 'fa fa-user', Sportif::class);
-            yield MenuItem::linkToDashboard('Analyser statistiques', 'fa fa-folder');
+            yield MenuItem::linkToRoute('Statistiques', 'fa fa-chart-bar', 'admin_statistiques');
             yield MenuItem::linkToCrud('Annuler séance planifiée', 'fa fa-folder', Seance::class);
             yield MenuItem::linkToRoute('Fiche de paiement', 'fa fa-money-bill', 'admin_paiements');
         }
