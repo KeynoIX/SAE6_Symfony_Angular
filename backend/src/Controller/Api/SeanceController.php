@@ -132,15 +132,15 @@ class SeanceController extends AbstractController
         $sportif = $this->getUser();
 
         if (!$seance) {
-            return $this->json(['message' => 'Séance non trouvée'], 404);
+            return new JsonResponse(['message' => 'Séance non trouvée'], 404);
         }
 
         if ($seance->getSportifs()->count() >= 3) {
-            return $this->json(['message' => 'Cette séance est complète.'], 400);
+            return new JsonResponse(['message' => 'Cette séance est complète.'], 400);
         }
 
         if ($seance->getSportifs()->contains($sportif)) {
-            return $this->json(['message' => 'Vous êtes déjà inscrit à cette séance.'], 400);
+            return new JsonResponse(['message' => 'Vous êtes déjà inscrit à cette séance.'], 400);
         }
 
         try {
@@ -150,7 +150,7 @@ class SeanceController extends AbstractController
 
             return $this->json(['message' => 'Inscription réussie'], 200);
         } catch (\Exception $e) {
-            return $this->json(['error' => $e->getMessage()], 400);
+            return new JsonResponse(['error' => $e->getMessage()], 400);
         }
     }
 }
