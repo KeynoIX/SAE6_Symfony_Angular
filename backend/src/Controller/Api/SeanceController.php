@@ -118,4 +118,24 @@ class SeanceController extends AbstractController
             return $this->json(['error' => $e->getMessage()], 400);
         }
     }
+
+    #[Route('/api/sportif/{id}/seances/historique', methods: ['GET'])]
+    public function getHistoriqueSeances(string $id, EntityManagerInterface $em): JsonResponse
+    {
+        $now = new \DateTime();
+        
+        $seances = $em->getRepository(Seance::class)->createQueryBuilder('s')
+            ->join('s.sportifs', 'sp')
+            ->where('sp.id = :sportifId')
+            ->andWhere('s.statut = :statut')
+            ->andWhere('s.date_heure < :now')
+            ->setParameter('sportifId', $id)
+            ->setParameter('statut', 'Validée')
+            ->setParameter('now', $now)
+            ->orderBy('s.date_heure', 'DESC')
+            ->getQuery()
+            ->getResult();
+        
+        return $this->json($seances, 200, [], ['groups' => 'seance:read']);
+    }
 }
