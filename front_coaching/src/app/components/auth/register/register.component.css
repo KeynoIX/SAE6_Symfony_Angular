@@ -3,148 +3,119 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background: #f8f8f8;
-  padding: 2rem;
+  height: 100vh;
+  background: #ffffff;
+  padding: 1rem;
 }
 
 /* La carte principale */
 .regform-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 900px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 600px;
   display: flex;
-  padding: 2rem;
+  flex-direction: column;
+  padding: 1.5rem;
+}
 
-  /* Colonne de gauche : Titre + Formulaire */
-  .left-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    /* Aligne le contenu en haut (pas verticalement centré) */
-    align-items: center;
-    
-    /* L’en-tête (titre) */
-    .regform-header {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 2rem; /* Espace avant le premier champ */
-      
-      h2 {
-        margin: 0;
-        font-size: 1.8rem;
-        font-weight: bold;
-      }
-    }
+/* Colonne de gauche : Titre + Formulaire */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    .regform-body {
-      width: 100%;
-      /* Pas de margin-right ici, on gère la place avec flex */
-    }
+/* L’en-tête (titre) */
+.regform-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.regform-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #212529;
+}
 
-    .form-group {
-      margin-bottom: 1.5rem;
-      position: relative;
+.regform-body {
+  width: 100%;
+}
 
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-      }
+.form-group {
+  margin-bottom: 1rem;
+  position: relative;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: #555;
+  font-size: 0.9rem;
+}
+.form-group .form-control {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  background: #ffffff;
+  color: #333;
+}
 
-      .form-control {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 1rem;
-      }
+.error-message {
+  margin-top: 0.3rem;
+  color: red;
+  font-size: 0.75rem;
+}
 
-      .error-message {
-        margin-top: 0.5rem;
-        color: red;
-        font-size: 0.85rem;
-      }
-    }
+.terms {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+.terms .form-check-input {
+  width: 1rem;
+  height: 1rem;
+}
+.terms .form-check-label {
+  font-size: 0.85rem;
+}
 
-    .password-criteria {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      margin-top: 0.5rem;
+.btn-submit {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  background: #007bff;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+.btn-submit:hover {
+  background: #0056b3;
+}
 
-      .criterion {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        .indicator {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background-color: red;
-        }
-        &.valid .indicator {
-          background-color: green;
-        }
-        &.invalid .indicator {
-          background-color: red;
-        }
-      }
-    }
+/* Lien amélioré */
+.login-link {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.login-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
 
-    .terms {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-
-      .form-check-input {
-        width: 1.2rem;
-        height: 1.2rem;
-      }
-      .form-check-label {
-        font-size: 0.9rem;
-      }
-    }
-
-    .btn-submit {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      border-radius: 5px;
-      background: #007bff;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      &:hover {
-        background: #0069d9;
-      }
-    }
-  }
-
-  /* Colonne de droite : Illustration + Lien en bas */
-  .right-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* ou 'space-between' si vous voulez le lien tout en bas */
-    
-    .illustration-img {
-      max-width: 300px;
-      height: auto;
-      border: none;
-    }
-
-    .login-link {
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #666;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
+/* Suppression de l'image */
+.right-col .illustration-img {
+  display: none;
 }

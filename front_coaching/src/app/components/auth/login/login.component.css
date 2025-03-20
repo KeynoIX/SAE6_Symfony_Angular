@@ -1,0 +1,109 @@
+/* Conteneur principal avec un fond blanc */
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #ffffff;
+    padding: 2rem;
+}
+
+/* Carte de connexion avec un fond clair et une bordure subtile */
+.login-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    color: #333;
+    padding: 2rem;
+}
+
+/* Entête de la carte */
+.login-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.login-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color: #212529;
+}
+
+/* Corps du formulaire */
+.login-body .form-group {
+    margin-bottom: 1rem;
+}
+.login-body label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 600;
+}
+.login-body input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #333;
+    font-size: 1rem;
+}
+.login-body input::placeholder {
+    color: #888;
+}
+
+/* Bouton de connexion */
+.login-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+/* Pied de page de la carte */
+.login-footer {
+    margin-top: 1rem;
+    text-align: center;
+}
+.login-footer a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Style personnalisé pour les flash messages */
+.alert {
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    padding: 0.75rem;
+}
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.btn-close {
+    filter: none;
+}
