@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Coach;
 use App\Entity\Seance;
+use App\Entity\Sportif;
 use App\Repository\SeanceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +18,6 @@ class SeanceController extends AbstractController
     public function index(SeanceRepository $seanceRepository): JsonResponse
     {
         $seances = $seanceRepository->findAll();
-
         return $this->json($seances, 200, [], ['groups' => 'seance:read']);
     }
 
@@ -56,11 +56,21 @@ class SeanceController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (isset($data['date_heure'])) $seance->setDateHeure(new \DateTime($data['date_heure']));
-        if (isset($data['type_seance'])) $seance->setTypeSeance($data['type_seance']);
-        if (isset($data['theme_seance'])) $seance->setThemeSeance($data['theme_seance']);
-        if (isset($data['niveau_seance'])) $seance->setNiveauSeance($data['niveau_seance']);
-        if (isset($data['statut'])) $seance->setStatut($data['statut']);
+        if (isset($data['date_heure'])) {
+            $seance->setDateHeure(new \DateTime($data['date_heure']));
+        }
+        if (isset($data['type_seance'])) {
+            $seance->setTypeSeance($data['type_seance']);
+        }
+        if (isset($data['theme_seance'])) {
+            $seance->setThemeSeance($data['theme_seance']);
+        }
+        if (isset($data['niveau_seance'])) {
+            $seance->setNiveauSeance($data['niveau_seance']);
+        }
+        if (isset($data['statut'])) {
+            $seance->setStatut($data['statut']);
+        }
 
         if (isset($data['coach_id'])) {
             $coach = $em->getRepository(Coach::class)->find($data['coach_id']);
@@ -78,7 +88,32 @@ class SeanceController extends AbstractController
     #[Route('/api/seance/{id}', methods: ['GET'])]
     public function show(Seance $seance): JsonResponse
     {
-        return $this->json($seance, 200, [], ['groups' => 'seance:read']);
+        return $this->json($seance, 200, [], ['groups' => ['seance:read', 'exercice:read']]);
+    }
+
+    #[Route('/api/seance/{id}/desinscription', methods: ['DELETE'])]
+    public function desinscrireSportif(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $seance = $em->getRepository(Seance::class)->find($id);
+        $sportif = $this->getUser();
+
+        if (!$seance || !$sportif) {
+            return $this->json(['message' => 'Séance ou sportif non trouvé'], 404);
+        }
+
+        if (!$seance->getSportifs()->contains($sportif)) {
+            return $this->json(['message' => 'Ce sportif n\'est pas inscrit à cette séance.'], 400);
+        }
+
+        try {
+            $seance->removeSportif($sportif);
+            $em->persist($seance);
+            $em->flush();
+
+            return $this->json(['message' => 'Sportif désinscrit avec succès'], 200);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     #[Route('/api/seance/{id}', methods: ['DELETE'])]
@@ -97,15 +132,15 @@ class SeanceController extends AbstractController
         $sportif = $this->getUser();
 
         if (!$seance) {
-            return $this->json(['message' => 'Séance non trouvée'], 404);
+            return new JsonResponse(['message' => 'Séance non trouvée'], 404);
         }
 
         if ($seance->getSportifs()->count() >= 3) {
-            return $this->json(['message' => 'Cette séance est complète.'], 400);
+            return new JsonResponse(['message' => 'Cette séance est complète.'], 400);
         }
 
         if ($seance->getSportifs()->contains($sportif)) {
-            return $this->json(['message' => 'Vous êtes déjà inscrit à cette séance.'], 400);
+            return new JsonResponse(['message' => 'Vous êtes déjà inscrit à cette séance.'], 400);
         }
 
         try {
@@ -115,7 +150,7 @@ class SeanceController extends AbstractController
 
             return $this->json(['message' => 'Inscription réussie'], 200);
         } catch (\Exception $e) {
-            return $this->json(['error' => $e->getMessage()], 400);
+            return new JsonResponse(['error' => $e->getMessage()], 400);
         }
     }
 }

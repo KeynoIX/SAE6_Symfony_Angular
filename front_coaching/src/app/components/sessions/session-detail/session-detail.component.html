@@ -1,22 +1,49 @@
 <div class="container my-4">
-    <div *ngIf="loading" class="text-center">Chargement...</div>
-    <div *ngIf="error" class="text-danger text-center">{{ error }}</div>
-    <div *ngIf="!loading && !error && session">
-      <h2 class="mb-4 text-center">{{ session.theme_seance }} - {{ session.type_seance }}</h2>
-      <div class="card">
-        <div class="card-body">
+  <div *ngIf="loading" class="text-center">Chargement...</div>
+  <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+  <div *ngIf="!loading && !error && session">
+    <h2 class="mb-4 text-center">{{ session.theme_seance }} - {{ session.type_seance }}</h2>
+    <div class="card">
+      <div class="card-body">
+        <p>
+          <strong>Date &amp; Heure :</strong> {{ session.date_heure | date:'short' }}
+        </p>
+        <p>
+          <strong>Niveau :</strong> {{ session.niveau_seance }}
+        </p>
+        <p>
+          <strong>Statut :</strong> {{ session.statut }}
+        </p>
+        <div *ngIf="session.coachId">
           <p>
-            <strong>Date &amp; Heure :</strong> {{ session.date_heure | date:'short' }}
+            <strong>Coach :</strong> {{ session.coachId.prenom }} {{ session.coachId.nom }}
           </p>
-          <p>
-            <strong>Niveau :</strong> {{ session.niveau_seance }}
-          </p>
-          <p>
-            <strong>Statut :</strong> {{ session.statut }}
-          </p>
-          <!-- Vous pouvez ajouter d'autres informations ici si besoin -->
         </div>
+        <!-- Liste des exercices associés -->
+        <div class="exercises mt-4" *ngIf="session.exercices && session.exercices.length > 0">
+          <h4 class="mb-3">Exercices</h4>
+          <ul class="list-group">
+            <li *ngFor="let ex of session.exercices" class="list-group-item">
+              <strong>{{ ex.nom }}</strong>
+              <span *ngIf="ex.difficulte"> - {{ ex.difficulte }}</span>
+              <span *ngIf="ex.duree_estimee"> ({{ ex.duree_estimee }} min)</span>
+            </li>
+          </ul>
+        </div>
+        <div class="mt-4" *ngIf="!session.exercices || session.exercices.length === 0">
+          <p>Aucun exercice associé.</p>
+        </div>
+      </div>
+      <div class="card-footer text-right">
+        <!-- Bouton S'inscrire si l'utilisateur n'est pas déjà inscrit -->
+        <button *ngIf="!isUserRegistered()" class="btn btn-success" (click)="inscrire()">
+          S'inscrire
+        </button>
+        <!-- Optionnel : Si déjà inscrit, afficher un message -->
+        <span *ngIf="isUserRegistered()" class="text-success">
+          Vous êtes inscrit.
+        </span>
       </div>
     </div>
   </div>
-  
+</div>

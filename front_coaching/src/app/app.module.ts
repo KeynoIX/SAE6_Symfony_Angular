@@ -1,13 +1,17 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
 // AppRouting et composant racine
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 // Modules Angular
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Composants Layout
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
@@ -47,12 +51,18 @@ import { ChartComponent } from './components/shared/chart/chart.component';
 import { ExerciseCardComponent } from './components/shared/exercise-card/exercise-card.component';
 import { NotificationComponent } from './components/shared/notification/notification.component';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 // Composant Page 404
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
-import { ReactiveFormsModule } from '@angular/forms';
+// Intercepteur pour JWT
 import { AuthInterceptor } from './services/auth.interceptor';
+import { AuthService } from './services/auth.service';
 
+export function initializeAuth(authService: AuthService) {
+  return (): Promise<any> => authService.initializeToken();
+}
 
 @NgModule({
   declarations: [
@@ -86,17 +96,29 @@ import { AuthInterceptor } from './services/auth.interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    RouterModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule  // Ajoutez cette ligne
+    ReactiveFormsModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    })
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeAuth,
+      deps: [AuthService],
+      multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

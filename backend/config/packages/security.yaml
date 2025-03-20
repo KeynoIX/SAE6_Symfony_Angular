@@ -51,9 +51,12 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/seances, roles: PUBLIC_ACCESS }
         - { path: ^/api/exercices, roles: ROLE_SPORTIF }
-        - { path: ^/api/seances, roles: PUBLIC_ACCESS }
-        - { path: ^/api/seance, roles: PUBLIC_ACCESS }
-        - { path: ^/api, roles: PUBLIC_ACCESS } 
+        - { path: ^/api/seance/\d+/desinscription, roles: ROLE_SPORTIF }
+        - { path: ^/api/seance/\d+/inscription, roles: ROLE_SPORTIF }
+        - { path: ^/api/seance/\d+(/|$), roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/seance, roles: ROLE_COACH }
+        - { path: ^/api, roles: PUBLIC_ACCESS }
+
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

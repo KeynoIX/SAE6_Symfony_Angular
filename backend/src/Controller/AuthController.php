@@ -14,12 +14,13 @@ class AuthController extends AbstractController
         private Security $security
     ) {}
 
-    #[Route('/api/user/me', name: 'api_user_me', methods: ['GET'])]
-    public function me()
+#[Route('/api/user/me', name: 'api_user_me', methods: ['GET'])]
+    public function me(): JsonResponse
     {
         $user = $this->security->getUser();
         if (!empty($user)) {
             return new JsonResponse([
+                'id' => $user->getId(),   // Ajout de l'ID ici
                 'email' => $user->getUserIdentifier(),
                 'roles' => $user->getRoles(),
             ]);

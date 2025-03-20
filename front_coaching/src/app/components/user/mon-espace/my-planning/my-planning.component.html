@@ -1,1 +1,42 @@
-<p>my-planning works!</p>
+<div class="container my-4">
+  <h2 class="text-center mb-4">Mon Planning</h2>
+  
+  <div *ngIf="loading" class="text-center">Chargement...</div>
+  <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+  
+  <div *ngIf="!loading && !error">
+    <mwl-calendar-month-view
+      [viewDate]="viewDate"
+      [events]="events"
+      [cellTemplate]="cellTemplate"
+      [eventTemplate]="eventTemplate">
+    </mwl-calendar-month-view>
+  
+    <!-- Template pour chaque cellule du calendrier -->
+    <ng-template #cellTemplate let-day="day">
+      <div class="custom-day-cell">
+        <div class="day-number">{{ day.date | date:'d' }}</div>
+        <div class="day-events">
+          <div *ngFor="let event of day.events">
+            <ng-template
+              [ngTemplateOutlet]="eventTemplate"
+              [ngTemplateOutletContext]="{ event: event }">
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    
+    <!-- Template pour chaque événement cliquable -->
+    <ng-template #eventTemplate let-event="event">
+      <a [routerLink]="['/seance', event.meta.sessionId]" class="event-link">
+        <div class="my-event-text">
+          <strong>{{ event.meta.theme_seance }}</strong>
+          <span *ngIf="event.meta.coachName" class="coach-name">
+            (Coach : {{ event.meta.coachName }})
+          </span>
+        </div>
+      </a>
+    </ng-template>
+  </div>
+</div>

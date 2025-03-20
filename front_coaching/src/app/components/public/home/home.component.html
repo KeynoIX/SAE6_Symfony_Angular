@@ -1,24 +1,58 @@
-<div class="container mt-5">
-    <div class="text-center">
-      <h1 class="display-4">Bienvenue sur Sport & Coaching!</h1>
-      <p class="lead">Découvrez nos coachs, réservez vos séances et suivez votre progression 🏃‍♂️🏋️‍♀️</p>
-      <hr class="my-4">
-      <p>Votre aventure sportive commence ici !</p>
-      <!-- Boutons d'appel à l'action avec emojis -->
-      <div class="d-grid gap-3 col-6 mx-auto">
-        <a routerLink="/coachs" class="btn btn-primary btn-lg">
-          👥 Nos Coachs
-        </a>
-        <a routerLink="/seances" class="btn btn-success btn-lg">
-          📅 Voir les Séances
-        </a>
-        <a routerLink="/login" class="btn btn-warning btn-lg">
-          🔐 Connexion
-        </a>
-        <a routerLink="/register" class="btn btn-info btn-lg">
-          ✍️ Inscription
-        </a>
-      </div>
+<div class="container my-4">
+  <!-- Section Accueil -->
+  <div class="hero text-center">
+    <h1 class="display-4">Bienvenue sur Sport & Coaching!</h1>
+    <p class="lead">
+      Découvrez nos coachs, réservez vos séances et suivez votre progression.
+    </p>
+    <hr class="my-4">
+    <div class="d-grid gap-3 col-6 mx-auto">
+      <a routerLink="/coachs" class="btn btn-primary btn-lg">👥 Nos Coachs</a>
+      <a routerLink="/seances" class="btn btn-success btn-lg">📅 Voir les Séances</a>
+      <a routerLink="/login" class="btn btn-warning btn-lg">🔐 Connexion</a>
+      <a routerLink="/register" class="btn btn-info btn-lg">✍️ Inscription</a>
     </div>
   </div>
-  
+
+  <!-- Section Calendrier / Planning -->
+  <div class="my-planning-section mt-5">
+    <h2 class="text-center mb-4">Planning</h2>
+    <div *ngIf="loading" class="text-center">Chargement...</div>
+    <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+    <div *ngIf="!loading && !error">
+      <mwl-calendar-month-view
+        [viewDate]="viewDate"
+        [events]="events"
+        [cellTemplate]="cellTemplate"
+        [eventTemplate]="eventTemplate">
+      </mwl-calendar-month-view>
+
+      <!-- Template personnalisé pour chaque cellule du calendrier -->
+      <ng-template #cellTemplate let-day="day">
+        <div class="custom-day-cell">
+          <div class="day-number">{{ day.date | date:'d' }}</div>
+          <div class="day-events">
+            <div *ngFor="let event of day.events">
+              <ng-template
+                [ngTemplateOutlet]="eventTemplate"
+                [ngTemplateOutletContext]="{ event: event }">
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Template personnalisé pour chaque événement cliquable -->
+      <ng-template #eventTemplate let-event="event">
+        <a [routerLink]="['/seance', event.meta.sessionId]" class="event-link">
+          <div class="my-event-text">
+            <strong>{{ event.meta.theme_seance }}</strong>
+            <span *ngIf="event.meta.coachName" class="coach-name">
+              (Coach : {{ event.meta.coachName }})
+            </span>
+          </div>
+        </a>
+      </ng-template>
+    </div>
+  </div>
+</div>

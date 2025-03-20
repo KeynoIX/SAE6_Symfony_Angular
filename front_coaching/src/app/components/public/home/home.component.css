@@ -1,0 +1,67 @@
+/* Conteneur général */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Section Hero */
+.hero {
+  margin-bottom: 2rem;
+}
+.hero h1 {
+  font-weight: bold;
+}
+
+/* Section Planning */
+.my-planning-section {
+  margin-top: 3rem;
+}
+
+/* Personnalisation de la vue mensuelle */
+:host ::ng-deep .cal-month-view {
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Cellules du calendrier */
+.custom-day-cell {
+  min-height: 100px; /* Aspect carré */
+  padding: 0.5rem;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.day-number {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.day-events {
+  margin-top: 0.5rem;
+  overflow-y: auto;
+}
+
+/* Style des événements */
+.my-event-text {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.event-link {
+  text-decoration: none;
+  display: block;
+}
+.coach-name {
+  font-style: italic;
+  margin-left: 5px;
+  font-size: 0.85rem;
+}
