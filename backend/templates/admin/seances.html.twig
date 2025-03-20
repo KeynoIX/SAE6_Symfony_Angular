@@ -1,0 +1,79 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block content %}
+	<div class="container">
+		<h1 class="mb-4 text-center">Gestion des séances</h1>
+
+		<table class="table table-striped">
+			<thead class="table-dark">
+				<tr>
+					<th class="text-white">Date</th>
+					<th class="text-white">Sportifs</th>
+					<th class="text-white">Statut</th>
+					<th class="text-white">Appel</th>
+					<th class="text-white">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for seance in seances %}
+					<tr>
+						<td>{{ seance.dateHeure|date('d/m/Y H:i') }}</td>
+
+						<td>
+							{% for sportif in seance.sportifs %}
+								<span class="fw-bold">{{ sportif.prenom }}
+									{{ sportif.nom }}</span><br>
+							{% endfor %}
+						</td>
+
+						<td>
+							{% if seance.statut == 'Validée' %}
+								<span class="badge bg-success">Validée</span>
+							{% else %}
+								<span class="badge bg-warning text-dark">Prévue</span>
+							{% endif %}
+						</td>
+
+						<td>
+							{% for sportif in seance.sportifs %}
+								<div class="mb-3 p-2 border rounded bg-secondary text-white">
+									<strong class="d-block">{{ sportif.prenom }}
+										{{ sportif.nom }}</strong>
+
+									{% set participation = seance.participations|filter(p => p.sportif.id == sportif.id)|first %}
+
+									<div class="mb-2">
+										{% if participation and participation.presence == 'présent' %}
+											<span class="badge bg-success text-white p-2">Présent</span>
+										{% else %}
+											<span class="badge bg-danger text-white p-2">Absent</span>
+										{% endif %}
+									</div>
+
+									<div class="d-flex justify-content-center gap-2">
+										<a href="{{ path('marquer_presence', { id: seance.id, sportifId: sportif.id, presence: 'présent' }) }}" class="btn btn-sm btn-outline-light">
+											✔ Présent
+										</a>
+										<a href="{{ path('marquer_presence', { id: seance.id, sportifId: sportif.id, presence: 'absent' }) }}" class="btn btn-sm btn-outline-light">
+											✖ Absent
+										</a>
+									</div>
+								</div>
+							{% endfor %}
+						</td>
+
+						<td>
+							{% if seance.statut != 'Validée' %}
+								<a href="{{ path('valider_seance', { id: seance.id }) }}" class="btn btn-primary btn-sm">
+									Valider la séance
+								</a>
+							{% else %}
+								<span class="badge bg-success">Déjà validée</span>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

@@ -1,7 +1,6 @@
 {% extends '@EasyAdmin/layout.html.twig' %}
 
 {% block content %}
-	<h1>Fiche de paiement des coachs</h1>
 	<table class="table">
 		<thead>
 			<tr>
@@ -9,6 +8,7 @@
 				<th>Nombre de séances validées</th>
 				<th>Tarif horaire (€)</th>
 				<th>Total dû (€)</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -18,6 +18,12 @@
 					<td>{{ paiement.seances_validees }}</td>
 					<td>{{ paiement.tarif_horaire }}</td>
 					<td>{{ paiement.total_du }}</td>
+					<td>
+						<a href="{{ path('paiement_pdf', { id: paiement.id, periode: 'Mars 2024' }) }}" class="btn btn-primary">
+							Télécharger PDF
+						</a>
+					</td>
+
 				</tr>
 			{% endfor %}
 		</tbody>

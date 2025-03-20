@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 ])]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[Groups(['utilisateur:read', 'utilisateur:write', 'coach:read', 'sportif:read'])]
+    #[Groups(['utilisateur:read', 'utilisateur:write', 'coach:read', 'sportif:read', 'seance:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
