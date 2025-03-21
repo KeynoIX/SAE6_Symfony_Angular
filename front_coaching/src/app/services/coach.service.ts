@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CoachService {
-  private baseUrl = 'http://127.0.0.1:8008/api'; // Adaptez l'URL à votre configuration
+  private baseUrl = 'https://127.0.0.1:8008/api'; // Adaptez l'URL à votre configuration
 
   constructor(private http: HttpClient) {}
 
@@ -18,6 +18,4 @@ export class CoachService {
   getCoachById(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/coach/${id}`);
   }
-  
-  
 }
