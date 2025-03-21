@@ -84,6 +84,19 @@ class AppFixtures extends Fixture
 
         $manager->persist($coach);
 
+        $sportif = new Sportif();
+        $sportif->setEmail("sportif@sportif.fr");
+        $sportif->setPrenom($faker->firstName);
+        $sportif->setNom($faker->lastName);
+        $sportif->setRoles(['ROLE_SPORTIF']);
+        $sportif->setNiveauSportif($faker->randomElement(['Débutant', 'Intermédiaire', 'Avancé']));
+        $sportif->setDateInscription($faker->dateTimeBetween('-1 year', 'now'));
+
+        $hashedPassword = $this->passwordHasher->hashPassword($sportif, 'sportif');
+        $sportif->setPassword($hashedPassword);
+
+        $manager->persist($sportif);
+
         $exercices = [];
         for ($i = 0; $i < 15; $i++) {
             $exercice = new Exercice();
@@ -99,8 +112,9 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 10; $i++) {
             $seance = new Seance();
             $seance->setDateHeure($faker->dateTimeBetween('now', '+3 months'));
-            $seance->setTypeSeance($faker->randomElement(['Musculation', 'Cardio', 'Yoga']));
-            $seance->setThemeSeance($faker->word);
+            $seance->setTypeSeance($faker->randomElement(['Solo', 'Duo', 'Trio']));
+            $seance->setThemeSeance($faker->randomElement(['Prise de masse', 'Entraînement full-body', 'Séance bras & épaules',
+             'Séance jambes', 'Séance cardio', 'Séance abdos']));
             $seance->setNiveauSeance($faker->randomElement(['Débutant', 'Intermédiaire', 'Avancé']));
             $seance->setStatut($faker->randomElement(['Prévue', 'Validée', 'Annulée']));
 

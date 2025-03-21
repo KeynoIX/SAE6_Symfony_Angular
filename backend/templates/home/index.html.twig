@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue
+{% endblock %}
+
+{% block body %}
+	<div class="container text-center mt-5">
+		<h1 class="display-4">Espace privé Sport & Coaching</h1>
+		<p class="lead">Connectez-vous pour accéder à votre espace</p>
+		<a href="{{ path('app_login') }}" class="btn btn-primary btn-lg">Se connecter</a>
+	</div>
+{% endblock %}

@@ -20,7 +20,7 @@ class AuthController extends AbstractController
         $user = $this->security->getUser();
         if (!empty($user)) {
             return new JsonResponse([
-                'id' => $user->getId(),   // Ajout de l'ID ici
+                'id' => $user->getId(),
                 'email' => $user->getUserIdentifier(),
                 'roles' => $user->getRoles(),
             ]);

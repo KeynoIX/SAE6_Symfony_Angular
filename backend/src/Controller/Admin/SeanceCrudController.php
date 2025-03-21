@@ -56,9 +56,7 @@ class SeanceCrudController extends AbstractCrudController
 
             ChoiceField::new('statut', 'Statut')
                 ->setChoices([
-                    'Prévue' => 'Prévue',
-                    'Validée' => 'Validée',
-                    'Annulée' => 'Annulée',
+                    'Prévue' => 'Prévue'
                 ])
                 ->renderAsBadges(),
 

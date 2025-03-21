@@ -7,7 +7,6 @@ use App\Entity\Seance;
 use App\Entity\Sportif;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,12 +17,36 @@ class SeanceController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        $seances = $entityManager->getRepository(Seance::class)->findBy([
-            'coach_id' => $user
-        ]);
+        $queryBuilder = $entityManager->getRepository(Seance::class)->createQueryBuilder('s');
+
+        if (!in_array('ROLE_ADMIN', $user->getRoles())) {
+            $queryBuilder->where('s.coach_id = :coach')
+                ->setParameter('coach', $user);
+        }
+
+        $seancesPrevues = clone $queryBuilder;
+        $seancesValidees = clone $queryBuilder;
+        $seancesAnnulees = clone $queryBuilder;
+
+        $seancesPrevues = $seancesPrevues->andWhere('s.statut = :statut')
+            ->setParameter('statut', 'Prévue')
+            ->getQuery()
+            ->getResult();
+
+        $seancesValidees = $seancesValidees->andWhere('s.statut = :statut')
+            ->setParameter('statut', 'Validée')
+            ->getQuery()
+            ->getResult();
+
+        $seancesAnnulees = $seancesAnnulees->andWhere('s.statut = :statut')
+            ->setParameter('statut', 'Annulée')
+            ->getQuery()
+            ->getResult();
 
         return $this->render('admin/seances.html.twig', [
-            'seances' => $seances
+            'seancesPrevues' => $seancesPrevues,
+            'seancesValidees' => $seancesValidees,
+            'seancesAnnulees' => $seancesAnnulees
         ]);
     }
 
@@ -36,14 +59,49 @@ class SeanceController extends AbstractController
             throw $this->createNotFoundException('Séance introuvable.');
         }
 
-        $seance->setStatut('Validée');
+        $sportifs = $seance->getSportifs();
+        foreach ($sportifs as $sportif) {
+            $participation = $entityManager->getRepository(Participation::class)->findOneBy([
+                'seance' => $seance,
+                'sportif' => $sportif
+            ]);
 
+            if (!$participation || !in_array($participation->getPresence(), ['présent', 'absent'])) {
+                $this->addFlash('danger', 'Tous les sportifs doivent être notés avant de valider la séance.');
+                return $this->redirectToRoute('admin', ['routeName' => 'admin_seances']);
+            }
+        }
+
+        $seance->setStatut('Validée');
         $entityManager->persist($seance);
         $entityManager->flush();
 
         $this->addFlash('success', 'La séance a été validée avec succès.');
+        return $this->redirectToRoute('admin', ['routeName' => 'admin_seances']);
+    }
 
-        return $this->forward('App\\Controller\\Admin\\SeanceController::index');
+    #[Route('/seance/annuler/{id}', name: 'annuler_seance')]
+    public function annulerSeance(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $user = $this->getUser();
+
+        if (in_array('ROLE_COACH', $user->getRoles())) {
+            $this->addFlash('danger', 'Pour annuler la séance, veuillez contacter un responsable.');
+            return $this->redirectToRoute('admin', ['routeName' => 'admin_seances']);
+        }
+
+        $seance = $entityManager->getRepository(Seance::class)->find($id);
+
+        if (!$seance) {
+            throw $this->createNotFoundException('Séance introuvable.');
+        }
+
+        $seance->setStatut('Annulée');
+        $entityManager->persist($seance);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La séance a été annulée avec succès.');
+        return $this->redirectToRoute('admin', ['routeName' => 'admin_seances']);
     }
 
     #[Route('/seance/presence/{id}/{sportifId}/{presence}', name: 'marquer_presence')]
@@ -68,34 +126,10 @@ class SeanceController extends AbstractController
         }
 
         $participation->setPresence($presence);
-
         $entityManager->persist($participation);
         $entityManager->flush();
 
-        $this->addFlash('success', 'La séance a été validée avec succès.');
-
-        return $this->forward('App\\Controller\\Admin\\SeanceController::index');
+        $this->addFlash('success', 'La présence du sportif a été mise à jour.');
+        return $this->redirectToRoute('admin', ['routeName' => 'admin_seances']);
     }
-
-    #[Route('/seances/historique', name: 'admin_seances_historique')]
-    public function historique(EntityManagerInterface $entityManager): Response
-    {
-        $user = $this->getUser();
-        $now = new \DateTime();
-        
-        $seances = $entityManager->getRepository(Seance::class)->createQueryBuilder('s')
-            ->where('s.coach_id = :coach')
-            ->andWhere('s.statut = :statut')
-            ->andWhere('s.date_heure < :now')
-            ->setParameter('coach', $user)
-            ->setParameter('statut', 'Validée')
-            ->setParameter('now', $now)
-            ->orderBy('s.date_heure', 'DESC')
-            ->getQuery()
-            ->getResult();
-    
-        return $this->render('admin/seances_historique.html.twig', [
-            'seances' => $seances
-        ]);
-}
 }

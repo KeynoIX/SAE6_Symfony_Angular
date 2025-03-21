@@ -42,10 +42,8 @@ class BackOfficeAuthenticator extends AbstractLoginFormAuthenticator
     {
         $user = $token->getUser();
 
-        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_COACH', $user->getRoles())) {
             return new RedirectResponse('/admin');
-        } elseif (in_array('ROLE_COACH', $user->getRoles())) {
-            return new RedirectResponse('/coach');
         }
 
         return new RedirectResponse('/');
