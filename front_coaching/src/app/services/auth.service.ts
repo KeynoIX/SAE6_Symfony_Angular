@@ -6,16 +6,18 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 export class AuthUser {
   constructor(
     public id: number | null = null,
-    public email: string = '',
-    public roles: string[] = []
-  ) {}
+    public email: string = "",
+    public roles: string[] = [],
+    public description: string = "",  // Description de l'utilisateur
+    public dateInscription: string = ""  // Date d'inscription
+  ) { }
 
   isAdmin(): boolean {
-    return this.roles.includes('ROLE_ADMIN');
+    return this.roles.includes("ROLE_ADMIN");
   }
 
   isCoach(): boolean {
-    return this.roles.includes('ROLE_COACH');
+    return this.roles.includes("ROLE_COACH");
   }
 
   isLogged(): boolean {
@@ -24,7 +26,7 @@ export class AuthUser {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
   private apiUrlLogin = 'https://localhost:8008/api/login';
@@ -61,11 +63,7 @@ export class AuthService {
   private setCookie(token: string): void {
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
-    document.cookie = `${
-      this.localStorageToken
-    }=${token}; expires=${expires.toUTCString()}; path=/; SameSite=Lax${
-      location.protocol === 'https:' ? '; Secure' : ''
-    }`;
+    document.cookie = `${this.localStorageToken}=${token}; expires=${expires.toUTCString()}; path=/; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`;
   }
 
   // Méthode pour supprimer un cookie
@@ -77,10 +75,8 @@ export class AuthService {
   public initializeToken(): Promise<void> {
     return new Promise((resolve, reject) => {
       // Tente de récupérer le token depuis localStorage ou les cookies
-      let token =
-        localStorage.getItem(this.localStorageToken) ||
-        this.getCookie(this.localStorageToken);
-      console.log('Token récupéré dans initializeToken:', token);
+      let token = localStorage.getItem(this.localStorageToken) || this.getCookie(this.localStorageToken);
+      console.log("Token récupéré dans initializeToken:", token);
       if (token) {
         this.updateUserInfo(token);
       }
@@ -93,28 +89,21 @@ export class AuthService {
     if (token) {
       localStorage.setItem(this.localStorageToken, token);
       this.setCookie(token);
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-        'skip-token': 'true',
-      });
+      const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`, 'skip-token': 'true' });
       this.http.get<any>(this.apiUrlUserInfo, { headers }).subscribe({
-        next: (data) => {
+        next: data => {
           if (data && data.email) {
             this.currentTokenSubject.next(token);
-            this.currentAuthUserSubject.next(
-              new AuthUser(data.id, data.email, data.roles)
-            );
+            // Assurez-vous d'ajouter imageUrl, description, et dateInscription dans la réponse de l'API
+            this.currentAuthUserSubject.next(new AuthUser(data.id, data.email, data.roles, data.prenom, data.nom));
           } else {
             this.logout();
           }
         },
-        error: (err) => {
-          console.error(
-            "Erreur lors de la récupération de l'utilisateur :",
-            err
-          );
+        error: err => {
+          console.error("Erreur lors de la récupération de l'utilisateur :", err);
           this.logout();
-        },
+        }
       });
     } else {
       localStorage.removeItem(this.localStorageToken);
@@ -123,17 +112,17 @@ export class AuthService {
       this.currentAuthUserSubject.next(new AuthUser());
     }
   }
+  
 
   public login(email: string, password: string): Observable<boolean> {
-    return this.http.post<any>(this.apiUrlLogin, { email, password }).pipe(
-      map((response) => {
+    return this.http.post<any>(this.apiUrlLogin, { email, password })
+      .pipe(map(response => {
         if (response.token) {
           this.updateUserInfo(response.token);
           return true;
         }
         return false;
-      })
-    );
+      }));
   }
 
   public logout(): void {
