@@ -56,6 +56,7 @@ security:
         - { path: ^/api/seance/\d+(/|$), roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/seance, roles: ROLE_COACH }
         - { path: ^/api, roles: PUBLIC_ACCESS }
+        - {path: ^/api/bilan-entrainement, roles: ROLE_SPORTIF}
 
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
