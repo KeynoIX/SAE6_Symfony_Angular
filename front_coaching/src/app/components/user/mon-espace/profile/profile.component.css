@@ -1,0 +1,35 @@
+.container {
+    padding: 2rem 0;
+  }
+  
+  .card {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-body {
+    text-align: center;
+  }
+  
+  .card-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card p {
+    font-size: 1.2rem;
+  }
+  
+  .img-fluid {
+    border-radius: 50%;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  
+  hr {
+    margin: 2rem 0;
+  }
+  

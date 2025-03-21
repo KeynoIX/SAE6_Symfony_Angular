@@ -1,1 +1,43 @@
-<p>profile works!</p>
+<div class="container my-5">
+    <!-- En-tête du Profil -->
+    <h2 class="text-center mb-4">Mon Profil</h2>
+  
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border" role="status"></div>
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+  
+    <div *ngIf="!loading && user" class="card shadow-lg">
+      <div class="card-body">
+        <!-- Image de profil -->
+        <div class="text-center mb-4">
+          <img src="assets/uploads/random.png" alt="Profile Image" class="img-fluid rounded-circle" width="150" height="150">
+          <button class="btn btn-info mt-2" (click)="updateProfileImage('newImage.png')">Modifier l'image</button>
+        </div>
+  
+        <!-- Informations personnelles -->
+        <h3 class="text-center">{{ user.prenom }} {{ user.nom || 'Non renseigné' }}</h3>
+        <p class="text-center">{{ user.email }}</p>
+  
+        <hr>
+  
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Rôle :</strong> {{ user.roles.join(', ') || 'Non renseigné' }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Date d'inscription :</strong> {{ user.dateInscription || 'Non renseigné' }}</p>
+          </div>
+        </div>
+  
+        <hr>
+  
+        <!-- Bouton pour se déconnecter -->
+        <div class="text-center mt-3">
+          <button class="btn btn-danger" (click)="authService.logout()">Se déconnecter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
